@@ -5,7 +5,7 @@ Elleve øveprøver til **Folkeskolens Nationale Færdighedstest (FNF)** i matema
 GitHub Pages og køre i en hvilken som helst browser — også uden netforbindelse,
 når siden først er hentet.
 
-**Åbn prøverne:** https://cowboymathu.github.io/matematik-7-klasse-demotest/
+**Åbn prøverne:** https://mathumou.github.io/matematik-7-klasse-demotest/
 
 ## Hvad det er
 
