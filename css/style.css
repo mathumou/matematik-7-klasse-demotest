@@ -297,3 +297,59 @@ figure.figur svg { max-width: 100%; height: auto; }
 }
 .vaerditabel th { background: var(--blaa-lys); font-style: italic; }
 .vaerditabel .svarfelt { width: 4.5rem; font-size: 1rem; padding: .3rem; }
+
+/* ---------- Svarformater ud over enkeltvalg ---------- */
+.instruks { font-size: .92rem; color: var(--tekst-svag); margin: 1rem 0 .5rem; font-style: italic; }
+
+.svarvalg {
+  font: inherit; font-size: 1.05rem; font-weight: 600;
+  padding: .5rem 2rem .5rem .7rem; vertical-align: middle; margin: 0 .2rem;
+  border: 2px solid var(--blaa-kant); border-radius: 8px;
+  background: var(--blaa-lys) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231e3a8a' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right .6rem center/12px;
+  color: var(--blaa-moerk); appearance: none; -webkit-appearance: none; cursor: pointer;
+}
+.svarvalg:focus { outline: none; border-color: var(--blaa); background-color: #fff; }
+
+/* Sandt/falsk-matrix */
+.sf-tabel { width: 100%; border-collapse: collapse; margin-top: .75rem; }
+.sf-tabel th {
+  font-size: .85rem; color: var(--tekst-svag); font-weight: 600;
+  padding: .4rem .5rem; width: 4.5rem; text-align: center;
+}
+.sf-tabel td { padding: .7rem .5rem; border-top: 1px solid var(--kant); text-align: center; }
+.sf-tabel td.sf-udsagn { text-align: left; font-size: 1.08rem; }
+.sf-tabel input { width: 22px; height: 22px; accent-color: var(--blaa); cursor: pointer; }
+.sf-tabel tr:hover td { background: var(--blaa-lys); }
+
+/* Ordn tallene */
+.ordn-valgte {
+  display: flex; flex-wrap: wrap; gap: .45rem; align-items: center;
+  min-height: 56px; padding: .6rem;
+  border: 2px dashed var(--blaa-kant); border-radius: 10px; background: var(--blaa-lys);
+  margin-bottom: .9rem;
+}
+.ordn-tom { color: var(--tekst-svag); font-size: .9rem; font-style: italic; }
+.ordn-brikker { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .9rem; }
+.ordn-brik {
+  font: inherit; font-size: 1.05rem; font-weight: 600;
+  padding: .55rem 1rem; min-height: 46px;
+  border: 2px solid var(--kant); border-radius: 10px;
+  background: var(--flade); color: var(--tekst); cursor: pointer;
+}
+.ordn-brikker .ordn-brik:hover:not([disabled]) { border-color: var(--blaa); background: var(--blaa-lys); }
+.ordn-brikker .ordn-brik[disabled] { opacity: .3; cursor: default; }
+.ordn-brik.valgt { background: var(--blaa); color: #fff; border-color: var(--blaa); cursor: default; }
+.ordn-nulstil { min-height: 40px; padding: .4rem 1rem; font-size: .9rem; }
+
+/* Kort besked, fx "du skal vælge to" */
+.advarsel {
+  position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%);
+  background: var(--tekst); color: #fff; padding: .7rem 1.2rem;
+  border-radius: 10px; font-size: .95rem; z-index: 60; box-shadow: var(--skygge-loft);
+  max-width: calc(100% - 2rem);
+}
+
+@media (max-width: 520px) {
+  .sf-tabel th { width: 3.6rem; font-size: .8rem; }
+  .sf-tabel td.sf-udsagn { font-size: 1rem; }
+}

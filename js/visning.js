@@ -21,7 +21,11 @@
       return '<span class="broek"><span class="t">' + t + '</span><span class="n">' + n + '</span></span>';
     });
     h = h.replace(/\*\*([^*]+)\*\*/g, '<span class="spg">$1</span>');
-    h = h.replace(/\{svar\}/g, svarHtml || '');
+    if (Array.isArray(svarHtml)) {
+      h = h.replace(/\{svar(\d)\}/g, function (_, n) { return svarHtml[Number(n) - 1] || ''; });
+    } else {
+      h = h.replace(/\{svar\}/g, svarHtml || '');
+    }
     return h.split(/\n\s*\n/).map(function (p) {
       return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
     }).join('');

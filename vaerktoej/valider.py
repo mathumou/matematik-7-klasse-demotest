@@ -54,7 +54,61 @@ for p in manifest["proever"]:
             f(fil, nr, "mangler tekst")
 
         t = o.get("type")
-        if t == "valg":
+        if t == "flervalg":
+            v = o.get("valg") or []
+            k = o.get("korrekte") or []
+            if not k:
+                f(fil, nr, "mangler korrekte")
+            if any(not isinstance(x, int) or not (0 <= x < len(v)) for x in k):
+                f(fil, nr, f"korrekte={k!r} peger uden for svarmulighederne")
+            if len(set(k)) != len(k):
+                f(fil, nr, "samme svarmulighed står to gange i korrekte")
+            if o.get("vaelg") != len(k):
+                f(fil, nr, f"vaelg={o.get('vaelg')!r} passer ikke med {len(k)} korrekte svar")
+            if len(set(v)) != len(v):
+                f(fil, nr, "to svarmuligheder er ens")
+        elif t == "sandtfalsk":
+            u, fc = o.get("udsagn") or [], o.get("facit") or []
+            if len(u) != len(fc):
+                f(fil, nr, f"{len(u)} udsagn men {len(fc)} facitværdier")
+            if any(not isinstance(x, bool) for x in fc):
+                f(fil, nr, "facit skal være true/false")
+            if len(set(fc)) < 2 and len(fc) > 2:
+                a(fil, f"{nr}: alle udsagn er {fc[0]} — eleven kan gætte ved at sætte alle ens")
+        elif t == "dropdown":
+            v = o.get("valg") or []
+            if len(v) < 2:
+                f(fil, nr, "dropdown med under to muligheder")
+            if not isinstance(o.get("korrekt"), int) or not (0 <= o["korrekt"] < len(v)):
+                f(fil, nr, f"korrekt={o.get('korrekt')!r} peger uden for svarmulighederne")
+            if "{svar}" not in o.get("tekst", ""):
+                f(fil, nr, "dropdown uden {svar}-plads i teksten")
+        elif t == "flerefelter":
+            felter = o.get("felter") or []
+            if len(felter) < 2:
+                f(fil, nr, "flerefelter med under to felter")
+            for j, felt in enumerate(felter, 1):
+                if not str(felt.get("svar", "")).strip():
+                    f(fil, nr, f"felt {j} mangler svar")
+                if not felt.get("navn"):
+                    f(fil, nr, f"felt {j} mangler navn")
+                if "{svar%d}" % j not in o.get("tekst", ""):
+                    f(fil, nr, "mangler {svar%d} i teksten" % j)
+        elif t == "ordn":
+            el = o.get("elementer") or []
+            if len(el) < 3:
+                f(fil, nr, "ordn-opgave med under tre elementer")
+            if o.get("retning") not in (None, "stigende", "faldende"):
+                f(fil, nr, f"ukendt retning: {o.get('retning')!r}")
+            try:
+                vaerdier = [float(str(x).replace(",", ".")) for x in el]
+                if len(set(vaerdier)) != len(vaerdier):
+                    f(fil, nr, "to elementer har samme værdi — rækkefølgen bliver tvetydig")
+                if vaerdier == sorted(vaerdier) or vaerdier == sorted(vaerdier, reverse=True):
+                    a(fil, f"{nr}: elementerne står allerede i rækkefølge")
+            except ValueError:
+                f(fil, nr, "et element kan ikke læses som tal")
+        elif t == "valg":
             v = o.get("valg") or []
             if len(v) != 4:
                 a(fil, f"{nr}: {len(v)} svarmuligheder (den rigtige prøve bruger altid 4)")
@@ -76,7 +130,7 @@ for p in manifest["proever"]:
                 f(fil, nr, "mangler svar")
             if "." in str(o.get("svar", "")):
                 f(fil, nr, f"facit {o['svar']!r} bruger punktum — dansk bruger komma")
-        else:
+        elif t not in ("flervalg", "sandtfalsk", "dropdown", "flerefelter", "ordn"):
             f(fil, nr, f"ukendt type: {t!r}")
 
         # Input tasks need somewhere to put the answer box.
@@ -96,9 +150,12 @@ for p in manifest["proever"]:
 
     omr = Counter(o.get("omraade") for o in opgaver)
     typ = Counter(o.get("type") for o in opgaver)
-    indtast = typ.get("tal", 0) + typ.get("broek", 0)
+    indtast = typ.get("tal", 0) + typ.get("broek", 0) + typ.get("flerefelter", 0)
     andel = indtast / len(opgaver) if opgaver else 0
-    if not (0.65 <= andel <= 0.85):
+    if p.get("varieret"):
+        if len(set(typ)) < 4:
+            a(fil, f"kun {len(set(typ))} svarformer i en prøve, der skal være varieret")
+    elif not (0.65 <= andel <= 0.85):
         a(fil, f"{andel:.0%} indtastningsopgaver — den officielle prøve ligger på ca. 76 %")
     if typ.get("broek", 0) < 1:
         a(fil, "ingen brøkopgave")

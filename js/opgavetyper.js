@@ -74,39 +74,139 @@
     return taetPaa(t * fn, ft * n);
   }
 
+
+  /* --- formats beyond single-answer multiple choice ---------------------- */
+
+  /* "Vælg to svar": a set of checkboxes where the chosen SET must match. */
+  function tjekFlervalg(opg, svar) {
+    if (!Array.isArray(svar)) return false;
+    var valgt = svar.slice().sort(function (a, b) { return a - b; }).join(',');
+    var facit = opg.korrekte.slice().sort(function (a, b) { return a - b; }).join(',');
+    return valgt === facit;
+  }
+
+  /* Sandt/falsk over several statements. Every row must be right. */
+  function tjekSandtFalsk(opg, svar) {
+    if (!Array.isArray(svar)) return false;
+    for (var i = 0; i < opg.facit.length; i++) {
+      if (svar[i] !== opg.facit[i]) return false;
+    }
+    return true;
+  }
+
+  /* A dropdown sitting inside the sentence. */
+  function tjekDropdown(opg, svar) {
+    return svar !== null && svar !== undefined && svar !== '' && Number(svar) === opg.korrekt;
+  }
+
+  /* Several input boxes in one task, e.g. a coordinate pair. */
+  function tjekFlereFelter(opg, svar) {
+    if (!svar) return false;
+    for (var i = 0; i < opg.felter.length; i++) {
+      var f = opg.felter[i], givet = svar[i];
+      if (givet === undefined || String(givet).trim() === '') return false;
+      var v = tilTal(givet);
+      if (v === null || !taetPaa(v, tilTal(f.svar))) return false;
+    }
+    return true;
+  }
+
+  /* Put the values in order. The chosen sequence must match exactly. */
+  function tjekOrdn(opg, svar) {
+    if (!Array.isArray(svar) || svar.length !== opg.elementer.length) return false;
+    // Ties are legitimate: 0,5 and 0,50 may both be placeable anywhere equal.
+    for (var i = 0; i < svar.length - 1; i++) {
+      var a = tilTal(opg.elementer[svar[i]]), b = tilTal(opg.elementer[svar[i + 1]]);
+      if (a === null || b === null) return false;
+      if (opg.retning === 'faldende' ? a < b : a > b) return false;
+    }
+    return true;
+  }
+
   function tjekValg(opg, svar) {
     return svar !== null && svar !== undefined && Number(svar) === opg.korrekt;
   }
 
   function erBesvaret(opg, svar) {
     if (svar === null || svar === undefined) return false;
-    if (opg.type === 'broek') {
-      return !!(svar && String(svar.taeller || '').trim() && String(svar.naevner || '').trim());
+    switch (opg.type) {
+      case 'broek':
+        return !!(String(svar.taeller || '').trim() && String(svar.naevner || '').trim());
+      case 'valg':
+      case 'dropdown':
+        return svar !== '';
+      case 'flervalg':
+        return Array.isArray(svar) && svar.length > 0;
+      case 'sandtfalsk':
+        return Array.isArray(svar) && svar.length === opg.facit.length &&
+               svar.every(function (x) { return x === true || x === false; });
+      case 'ordn':
+        return Array.isArray(svar) && svar.length === opg.elementer.length;
+      case 'flerefelter':
+        return Array.isArray(svar) && opg.felter.every(function (_, i) {
+          return svar[i] !== undefined && String(svar[i]).trim() !== '';
+        });
+      default:
+        return String(svar).trim() !== '';
     }
-    if (opg.type === 'valg') return svar !== '';
-    return String(svar).trim() !== '';
   }
 
   function tjek(opg, svar) {
     if (!erBesvaret(opg, svar)) return false;
     switch (opg.type) {
-      case 'valg':  return tjekValg(opg, svar);
-      case 'broek': return tjekBroek(opg, svar);
-      default:      return tjekTal(opg, svar);
+      case 'valg':        return tjekValg(opg, svar);
+      case 'broek':       return tjekBroek(opg, svar);
+      case 'flervalg':    return tjekFlervalg(opg, svar);
+      case 'sandtfalsk':  return tjekSandtFalsk(opg, svar);
+      case 'dropdown':    return tjekDropdown(opg, svar);
+      case 'flerefelter': return tjekFlereFelter(opg, svar);
+      case 'ordn':        return tjekOrdn(opg, svar);
+      default:            return tjekTal(opg, svar);
     }
   }
 
   /* The pupil's answer, shown back in the review screen. */
   function visSvar(opg, svar) {
     if (!erBesvaret(opg, svar)) return null;
-    if (opg.type === 'valg') return opg.valg[Number(svar)];
-    if (opg.type === 'broek') return svar.taeller + '/' + svar.naevner;
-    return String(svar).trim();
+    switch (opg.type) {
+      case 'valg':
+      case 'dropdown':
+        return opg.valg[Number(svar)];
+      case 'broek':
+        return svar.taeller + '/' + svar.naevner;
+      case 'flervalg':
+        return svar.slice().sort(function (a, b) { return a - b; })
+                  .map(function (i) { return opg.valg[i]; }).join(' og ');
+      case 'sandtfalsk':
+        return svar.map(function (v) { return v ? 'sandt' : 'falsk'; }).join(', ');
+      case 'ordn':
+        return svar.map(function (i) { return opg.elementer[i]; }).join(' ; ');
+      case 'flerefelter':
+        return opg.felter.map(function (f, i) { return f.navn + ' = ' + svar[i]; }).join(', ');
+      default:
+        return String(svar).trim();
+    }
   }
 
   /* The correct answer, shown in the review screen. */
   function visFacit(opg) {
-    if (opg.type === 'valg') return opg.valg[opg.korrekt];
+    if (opg.type === 'valg' || opg.type === 'dropdown') return opg.valg[opg.korrekt];
+    if (opg.type === 'flervalg') {
+      return opg.korrekte.map(function (i) { return opg.valg[i]; }).join(' og ');
+    }
+    if (opg.type === 'sandtfalsk') {
+      return opg.facit.map(function (v) { return v ? 'sandt' : 'falsk'; }).join(', ');
+    }
+    if (opg.type === 'ordn') {
+      var r = opg.elementer.map(function (_, i) { return i; }).sort(function (a, b) {
+        var d = tilTal(opg.elementer[a]) - tilTal(opg.elementer[b]);
+        return opg.retning === 'faldende' ? -d : d;
+      });
+      return r.map(function (i) { return opg.elementer[i]; }).join(' ; ');
+    }
+    if (opg.type === 'flerefelter') {
+      return opg.felter.map(function (f) { return f.navn + ' = ' + f.svar; }).join(', ');
+    }
     if (opg.type === 'broek') return opg.taeller + '/' + opg.naevner;
     if (opg.interval) return opg.facitVis || (visTal(opg.interval[0]) + ' – ' + visTal(opg.interval[1]));
     return String(opg.svar);

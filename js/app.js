@@ -122,6 +122,18 @@
     });
   }
 
+  function advar(besked) {
+    var el = document.getElementById('advarsel');
+    if (el) el.remove();
+    var d = document.createElement('div');
+    d.id = 'advarsel';
+    d.className = 'advarsel';
+    d.setAttribute('role', 'status');
+    d.textContent = besked;
+    document.body.appendChild(d);
+    setTimeout(function () { if (d.parentNode) d.remove(); }, 2600);
+  }
+
   /* ---------------- dialog ---------------- */
 
   function bekraeft(titel, tekst, knapTekst, saa) {
@@ -225,7 +237,8 @@
       state.tagTid = document.getElementById('tagtid').checked;
       // Shuffle the options once per attempt, so a remembered letter is worth nothing.
       p.opgaver.forEach(function (o) {
-        if (o.type === 'valg' && !o.fastOrden) state.orden[o.id] = blandOrden(o.valg.length);
+        var kanBlandes = ['valg', 'flervalg', 'dropdown'].indexOf(o.type) !== -1;
+        if (kanBlandes && !o.fastOrden) state.orden[o.id] = blandOrden(o.valg.length);
       });
       visOpgave();
     });
@@ -255,6 +268,26 @@
   /* The answer control for one task, rendered inline where {svar} sits. */
   function svarFelt(o) {
     var v = state.svar[o.id];
+
+    if (o.type === 'dropdown') {
+      var orden = state.orden[o.id] || o.valg.map(function (_, i) { return i; });
+      var h = '<select class="svarvalg" id="sv-d" aria-label="Vælg svar">' +
+              '<option value="">vælg …</option>';
+      orden.forEach(function (origIdx) {
+        h += '<option value="' + origIdx + '"' + (v === origIdx ? ' selected' : '') + '>' +
+             V.esc(o.valg[origIdx]) + '</option>';
+      });
+      return h + '</select>';
+    }
+
+    if (o.type === 'flerefelter') {
+      return o.felter.map(function (f, i) {
+        var vv = (v && v[i]) || '';
+        return '<input class="svarfelt smal" id="sv-f' + i + '" inputmode="decimal" autocomplete="off" ' +
+               'aria-label="' + V.esc(f.navn) + '" value="' + V.esc(vv) + '">';
+      });
+    }
+
     if (o.type === 'broek') {
       var t = (v && v.taeller) || '', n = (v && v.naevner) || '';
       return '<span class="broek-svar">' +
@@ -285,7 +318,8 @@
     html += '<article class="opgave">';
     html += '<div class="opgave-nr">' + V.esc(OMRAADENAVN[o.omraade] || '') + '</div>';
 
-    var felt = (o.type === 'valg') ? '' : svarFelt(o);
+    var blokTyper = ['valg', 'flervalg', 'sandtfalsk', 'ordn'];
+    var felt = blokTyper.indexOf(o.type) !== -1 ? '' : svarFelt(o);
 
     if (o.figurFoer && o.figur) html += V.figur(o.figur);
     html += '<div class="opgave-tekst">' + V.tekst(o.tekst, felt) + '</div>';
@@ -295,12 +329,68 @@
     if (o.type === 'valg') {
       var orden = state.orden[o.id] || o.valg.map(function (_, i) { return i; });
       html += '<div class="valg' + (o.grid2 ? ' grid2' : '') + '">';
-      orden.forEach(function (origIdx, visIdx) {
+      orden.forEach(function (origIdx) {
         var valgt = state.svar[o.id] === origIdx ? ' checked' : '';
         html += '<label><input type="radio" name="v" value="' + origIdx + '"' + valgt + '>' +
           '<span class="valg-tekst">' + V.tekstKort(o.valg[origIdx]) + '</span></label>';
       });
       html += '</div>';
+    }
+
+    if (o.type === 'flervalg') {
+      var ordenF = state.orden[o.id] || o.valg.map(function (_, i) { return i; });
+      var valgteF = state.svar[o.id] || [];
+      if (!/hvilke to|vælg to|to af/i.test(o.tekst) || o.vaelg !== 2) {
+        html += '<p class="instruks">Sæt kryds ved ' + (o.vaelg === 2 ? 'to' : o.vaelg) + ' svar.</p>';
+      }
+      html += '<div class="valg' + (o.grid2 ? ' grid2' : '') + '">';
+      ordenF.forEach(function (origIdx) {
+        var valgt = valgteF.indexOf(origIdx) !== -1 ? ' checked' : '';
+        html += '<label><input type="checkbox" name="fv" value="' + origIdx + '"' + valgt + '>' +
+          '<span class="valg-tekst">' + V.tekstKort(o.valg[origIdx]) + '</span></label>';
+      });
+      html += '</div>';
+    }
+
+    if (o.type === 'sandtfalsk') {
+      var sv = state.svar[o.id] || [];
+      if (!/sandt eller falsk/i.test(o.tekst)) {
+        html += '<p class="instruks">Er hvert udsagn sandt eller falsk?</p>';
+      }
+      html += '<table class="sf-tabel"><thead><tr><th></th><th>Sandt</th><th>Falsk</th></tr></thead><tbody>';
+      o.udsagn.forEach(function (u, i) {
+        html += '<tr><td class="sf-udsagn">' + V.tekstKort(u) + '</td>' +
+          '<td><input type="radio" name="sf' + i + '" value="1"' + (sv[i] === true ? ' checked' : '') +
+              ' aria-label="Sandt"></td>' +
+          '<td><input type="radio" name="sf' + i + '" value="0"' + (sv[i] === false ? ' checked' : '') +
+              ' aria-label="Falsk"></td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+
+    if (o.type === 'ordn') {
+      var valgtO = state.svar[o.id] || [];
+      var retning = o.retning === 'faldende' ? 'størst til mindst' : 'mindst til størst';
+      html += '<p class="instruks">' +
+        (/til (størst|mindst)/i.test(o.tekst)
+          ? 'Klik ét tal ad gangen.'
+          : 'Klik på tallene i rækkefølge, fra ' + retning + '.') + '</p>';
+      html += '<div class="ordn-valgte">';
+      if (valgtO.length === 0) {
+        html += '<span class="ordn-tom">Din rækkefølge kommer her</span>';
+      } else {
+        valgtO.forEach(function (idx, plads) {
+          html += '<span class="ordn-brik valgt">' + (plads + 1) + '. ' + V.tekstKort(o.elementer[idx]) + '</span>';
+        });
+      }
+      html += '</div>';
+      html += '<div class="ordn-brikker">';
+      o.elementer.forEach(function (el, i) {
+        var brugt = valgtO.indexOf(i) !== -1;
+        html += '<button type="button" class="ordn-brik" data-i="' + i + '"' + (brugt ? ' disabled' : '') + '>' +
+          V.tekstKort(el) + '</button>';
+      });
+      html += '</div><button type="button" class="knap knap-sekundaer ordn-nulstil" id="ordn-nulstil">Start rækkefølgen forfra</button>';
     }
     html += '</article>';
 
@@ -330,7 +420,17 @@
       var t = document.getElementById('sv-t'), n = document.getElementById('sv-n');
       if (!t || !n) return;
       state.svar[o.id] = { taeller: t.value.trim(), naevner: n.value.trim() };
-    } else if (o.type !== 'valg') {
+    } else if (o.type === 'flerefelter') {
+      var vaerdier = o.felter.map(function (_, i) {
+        var el = document.getElementById('sv-f' + i);
+        return el ? el.value.trim() : '';
+      });
+      state.svar[o.id] = vaerdier;
+    } else if (o.type === 'dropdown') {
+      var d = document.getElementById('sv-d');
+      if (!d) return;
+      state.svar[o.id] = d.value === '' ? '' : Number(d.value);
+    } else if (['valg', 'flervalg', 'sandtfalsk', 'ordn'].indexOf(o.type) === -1) {
       var s = document.getElementById('sv');
       if (!s) return;
       state.svar[o.id] = s.value.trim();
@@ -350,6 +450,51 @@
     Array.prototype.forEach.call(document.querySelectorAll('input[name="v"]'), function (r) {
       r.addEventListener('change', function () { state.svar[o.id] = Number(r.value); });
     });
+
+    var d = document.getElementById('sv-d');
+    if (d) d.addEventListener('change', function () { laesFelt(o); });
+
+    // Multiple-select: stop at the required number rather than silently
+    // scoring a fifth tick as wrong.
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="fv"]'), function (c) {
+      c.addEventListener('change', function () {
+        var valgte = Array.prototype.slice.call(document.querySelectorAll('input[name="fv"]:checked'))
+          .map(function (x) { return Number(x.value); });
+        if (o.vaelg && valgte.length > o.vaelg) {
+          c.checked = false;
+          valgte = valgte.filter(function (x) { return x !== Number(c.value); });
+          advar('Du skal vælge ' + o.vaelg + '. Fjern et kryds først.');
+        }
+        state.svar[o.id] = valgte;
+      });
+    });
+
+    if (o.type === 'sandtfalsk') {
+      o.udsagn.forEach(function (_, i) {
+        Array.prototype.forEach.call(document.querySelectorAll('input[name="sf' + i + '"]'), function (r) {
+          r.addEventListener('change', function () {
+            var sv = (state.svar[o.id] || []).slice();
+            sv[i] = r.value === '1';
+            state.svar[o.id] = sv;
+          });
+        });
+      });
+    }
+
+    if (o.type === 'ordn') {
+      Array.prototype.forEach.call(document.querySelectorAll('.ordn-brikker .ordn-brik'), function (b) {
+        b.addEventListener('click', function () {
+          var sv = (state.svar[o.id] || []).slice();
+          sv.push(Number(b.dataset.i));
+          state.svar[o.id] = sv;
+          gemIgang(); visOpgave();
+        });
+      });
+      var nul = document.getElementById('ordn-nulstil');
+      if (nul) nul.addEventListener('click', function () {
+        state.svar[o.id] = []; gemIgang(); visOpgave();
+      });
+    }
 
     var f = document.getElementById('forrige');
     if (f) f.addEventListener('click', function () { laesFelt(o); if (state.indeks > 0) { state.indeks--; gemIgang(); visOpgave(); } });
