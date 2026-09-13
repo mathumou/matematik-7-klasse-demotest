@@ -1,0 +1,119 @@
+{
+  "titel": "Prøve 7",
+  "varighed": 45,
+  "opgaver": [
+    { "id": "h1", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvilket tal peger pilen på?** {svar}",
+      "figur": { "slags": "tallinje", "fra": 7.9, "til": 8.0, "trin": 0.01, "labels": [7.9, 7.95, 8.0], "pil": 7.93, "alt": "en tallinje fra 7,9 til 8, hvor inddelingen har værdien 0,01. Pilen peger på tre dele efter 7,9" },
+      "svar": "7,93",
+      "forklaring": "Hvert mellemrum er 0,01. Pilen står 3 mellemrum efter 7,9: 7,9 + 0,03 = 7,93." },
+
+    { "id": "h2", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "4356 + 3899 = {svar}",
+      "svar": "8255",
+      "forklaring": "3899 er tæt på 3900. Læg 3900 til og træk 1 fra: 4356 + 3900 = 8256, og 8256 − 1 = 8255." },
+
+    { "id": "h3", "type": "tal", "omraade": "algebra",
+      "tekst": "Figurerne vokser efter et mønster.\n\n**Hvor mange blå tern er der i figur 6?** {svar}",
+      "figur": { "slags": "kvadratmoenster", "figurer": [ { "side": 5, "hul": 3, "navn": "Figur 1" }, { "side": 6, "hul": 4, "navn": "Figur 2" }, { "side": 7, "hul": 5, "navn": "Figur 3" } ], "alt": "Tre figurer bygget af tern. Figur 1 er et kvadrat med sidelængden fem og et hul i midten på tre gange tre. Figur 2 er et kvadrat med sidelængden seks og et hul i midten på fire gange fire. Figur 3 er et kvadrat med sidelængden syv og et hul i midten på fem gange fem" },
+      "svar": "36",
+      "forklaring": "Tæl ternene: figur 1 har 25 − 9 = 16, figur 2 har 36 − 16 = 20, figur 3 har 49 − 25 = 24. Der kommer 4 tern til hver gang.\n\nSå fortsætter det: 28, 32, 36. Figur 6 har 36 tern." },
+
+    { "id": "h4", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "**Hvor stor en procentdel af figuren er blå?** {svar} %",
+      "figur": { "slags": "gitter", "raekker": 4, "kolonner": 5, "farvede": [0,1,2,3,4,5,6,7,8,9,10], "alt": "en figur der består af 4 rækker med 5 felter i hver række. 11 af felterne er farvet blå" },
+      "svar": "55",
+      "forklaring": "Figuren har 4 · 5 = 20 felter, og 11 af dem er blå.\n\nHvert felt er 5 %, fordi 100 : 20 = 5. Så 11 felter er 11 · 5 = 55 %." },
+
+    { "id": "h5", "type": "valg", "omraade": "tal",
+      "tekst": "**Hvilket tal består af 8 tiere og 3 tiendedele?**",
+      "valg": ["80,3", "8,3", "83", "0,83"], "korrekt": 0,
+      "forklaring": "8 tiere er 80. Tiendedele står som den første decimal efter kommaet, så 3 tiendedele er 0,3. Tilsammen 80,3.\n\nDer er ingen enere, så enerpladsen får et nul: 80,3." },
+
+    { "id": "h6", "type": "broek", "omraade": "regnestrategier",
+      "tekst": "[[7/8]] − [[1/2]] = {svar}",
+      "taeller": "3", "naevner": "8",
+      "forklaring": "Lav [[1/2]] om til ottendedele: gang tæller og nævner med 4, så [[1/2]] = [[4/8]].\n\nSå er [[7/8]] − [[4/8]] = [[3/8]]." },
+
+    { "id": "h7", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "9000 − 3754 = {svar}",
+      "svar": "5246",
+      "forklaring": "Tæl op fra 3754: til 3800 er der 46, til 4000 er der 200 mere, og til 9000 er der 5000 mere. Tilsammen 46 + 200 + 5000 = 5246." },
+
+    { "id": "h8", "type": "tal", "omraade": "algebra",
+      "tekst": "3 · 8 · 4 = 12 · {svar}",
+      "svar": "8",
+      "forklaring": "Venstre side er 3 · 8 · 4 = 96. Højre side skal give 96: 96 : 12 = 8.\n\nDu kan også se det direkte: 3 · 4 = 12, og 8-tallet står tilbage." },
+
+    { "id": "h9", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvilket tal er 0,5 mindre end 3,2?** {svar}",
+      "svar": "2,7",
+      "forklaring": "3,2 − 0,5: træk først 0,2 fra og nå ned til 3, og træk så de sidste 0,3 fra: 3 − 0,3 = 2,7." },
+
+    { "id": "h10", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "En skole køber 28 kasser med 16 mælk i hver kasse.\n\n**Hvor mange mælk køber skolen?** {svar}",
+      "svar": "448",
+      "forklaring": "28 · 16 kan deles op: 28 · 10 = 280 og 28 · 6 = 168. Læg sammen: 280 + 168 = 448." },
+
+    { "id": "h11", "type": "tal", "omraade": "algebra",
+      "tekst": "I tabellen er der sammenhæng mellem x- og y-værdierne.\n\n**Hvilket tal skal der stå i det tomme felt?**",
+      "tabel": { "hoved": ["x", "y"], "raekker": [["1","11"],["2","22"],["3","33"],["4","44"],["5","55"],["…","…"],["{svar}","330"]] },
+      "svar": "30",
+      "forklaring": "y er altid 11 gange x: 3 · 11 = 33, 5 · 11 = 55.\n\nNår y = 330, er x = 330 : 11 = 30." },
+
+    { "id": "h12", "type": "valg", "omraade": "regnestrategier", "grid2": true,
+      "tekst": "Om natten viste termometeret −5 °C.\nI løbet af formiddagen steg temperaturen 5 °C.\n\n**Hvad viste termometeret så?**",
+      "valg": ["0 °C", "−10 °C", "10 °C", "−5 °C"], "korrekt": 0,
+      "forklaring": "Fra −5 og præcis 5 grader frem lander du på 0.\n\nEt tal og dets modsatte tal giver netop 0, når man lægger dem sammen: −5 + 5 = 0." },
+
+    { "id": "h13", "type": "valg", "omraade": "algebra", "grid2": true,
+      "tekst": "**Hvilket regneudtryk viser det samlede antal prikker?**",
+      "figur": { "slags": "prikker", "grupper": [ { "raekker": 3, "kolonner": 3, "navn": "Figur 1" }, { "raekker": 3, "kolonner": 6, "navn": "Figur 2" } ], "alt": "to figurer med prikker. Figur 1 består af 3 rækker med 3 prikker i hver række. Figur 2 består af 3 rækker med 6 prikker i hver række" },
+      "figurFoer": true,
+      "valg": ["3 · (3 + 6)", "3 · 3 · 6", "3 + 3 + 6", "3 · 9 · 3"], "korrekt": 0,
+      "forklaring": "Begge figurer har 3 rækker. Tilsammen er der 3 + 6 = 9 prikker i hver række, altså 3 · 9 = 27 prikker.\n\nTjek: 9 + 18 = 27. ✓ De andre udtryk giver 54, 12 og 81." },
+
+    { "id": "h14", "type": "tal", "omraade": "algebra",
+      "tekst": "6 · {svar} + 7 = 49",
+      "svar": "7",
+      "forklaring": "Træk 7 fra begge sider: 6 · x = 42. Divider med 6: x = 7.\n\nTjek: 6 · 7 + 7 = 42 + 7 = 49. ✓" },
+
+    { "id": "h15", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "**Hvor meget er 80 % af 350?** {svar}",
+      "svar": "280",
+      "forklaring": "10 % af 350 er 35, så 80 % er 8 · 35 = 280.\n\nDu kan også regne baglæns: 20 % er 70, og 350 − 70 = 280." },
+
+    { "id": "h16", "type": "tal", "omraade": "tal",
+      "tekst": "**Skriv det tal, der mangler i talfølgen.**\n\n5 ; 5,2 ; 5,4 ; {svar} ; 5,8 ; 6",
+      "svar": "5,6",
+      "forklaring": "Der lægges 0,2 til hver gang: 5 → 5,2 → 5,4 → 5,6 → 5,8 → 6." },
+
+    { "id": "h17", "type": "valg", "omraade": "algebra",
+      "tekst": "Tegningen viser et rektangel med sidelængderne 12 og 2.\n\n**Hvilket regneudtryk kan man bruge til at udregne rektanglets omkreds?**",
+      "figur": { "slags": "rektangel", "bredde": 12, "hoejde": 2, "labelB": "12", "labelH": "2", "alt": "et rektangel med sidelængderne 12 og 2" },
+      "figurFoer": true,
+      "valg": ["2 · (12 + 2)", "12 · 2", "12 + 2", "2 · 12 + 2"], "korrekt": 0,
+      "forklaring": "Omkredsen er 12 + 2 + 12 + 2 = 28, altså to gange (12 + 2): 2 · 14 = 28.\n\nHer er fælden tydelig: 12 · 2 = 24 er arealet, og 2 · 12 + 2 = 26 er hverken det ene eller det andet." },
+
+    { "id": "h18", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "4725 : 5 = {svar}",
+      "svar": "945",
+      "forklaring": "Del op i tal, der er lette at dividere: 4725 = 4500 + 200 + 25. Så er 4500 : 5 = 900, 200 : 5 = 40 og 25 : 5 = 5. Tilsammen 945.\n\nTjek: 945 · 5 = 4725. ✓" },
+
+    { "id": "h19", "type": "valg", "omraade": "algebra",
+      "tekst": "Et sommerhus lejes for 2500 kr. i grundpris og derudover 400 kr. pr. døgn.\n\n**Hvilken funktionsforskrift viser prisen for x døgn?**",
+      "valg": ["f(x) = 2500 + 400 · x", "g(x) = 2500 · x + 400", "h(x) = 2900 · x", "p(x) = 2500 · 400 · x"], "korrekt": 0,
+      "forklaring": "Grundprisen på 2500 kr. betales én gang. De 400 kr. betales pr. døgn og skal ganges med x.\n\nPrøv med 5 døgn: 2500 + 400 · 5 = 2500 + 2000 = 4500 kr. Udtrykket h(x) = 2900 · x ville opkræve grundprisen hvert eneste døgn." },
+
+    { "id": "h20", "type": "tal", "omraade": "algebra",
+      "tekst": "Sara tænker på et tal.\nHun ganger tallet med 7 og trækker 15 fra det nye tal, hun får.\nResultatet er 34.\n\n**Hvilket tal tænkte Sara på?** {svar}",
+      "svar": "7",
+      "forklaring": "Regn baglæns fra 34. Læg først 15 til: 34 + 15 = 49. Divider så med 7: 49 : 7 = 7.\n\nSom ligning: 7x − 15 = 34 → 7x = 49 → x = 7." },
+
+    { "id": "h21", "type": "tal", "omraade": "algebra",
+      "tekst": "**Hvilket tal skal der stå i den blå firkant?** {svar}",
+      "figur": { "slags": "tallinje", "fra": 0, "til": 100, "trin": 5, "labels": [0, 25, 50, 75, 100], "kasse": 45, "hop": [ { "fra": 45, "til": 70, "tekst": "+25" } ], "alt": "en tallinje med en blå firkant. Tallet der mangler hopper 25 frem på tallinjen og skal være lig med 70" },
+      "svar": "45",
+      "forklaring": "Tallet plus 25 giver 70, så gå baglæns: 70 − 25 = 45.\n\nSom ligning: x + 25 = 70, altså x = 45." }
+  ]
+}

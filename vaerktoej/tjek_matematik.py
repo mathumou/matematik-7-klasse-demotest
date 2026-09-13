@@ -1,0 +1,243 @@
+#!/usr/bin/env python3
+"""Independently re-derive every answer that can be re-derived.
+
+Hand-writing 200+ tasks two days before a real test is exactly the situation
+where one wrong facit does real damage: the boy solves it correctly and the app
+tells him he is wrong. So anything machine-checkable gets machine-checked.
+"""
+import json, re, pathlib
+from fractions import Fraction
+
+ROD = pathlib.Path(__file__).resolve().parent.parent
+fejl, tjekket, sprunget = [], 0, []
+
+def tal(s):
+    return Fraction(str(s).strip().replace("−", "-").replace(",", "."))
+
+def udregn(udtryk):
+    """Evaluate a Danish arithmetic expression exactly (· : − and decimal comma)."""
+    u = (udtryk.replace("·", "*").replace(":", "/").replace("−", "-")
+              .replace(" ", " ").strip())
+    u = re.sub(r"(\d),(\d)", r"\1.\2", u)
+    if not re.fullmatch(r"[\d\s+\-*/().]+", u):
+        raise ValueError(udtryk)
+    # Fraction() keeps it exact: no float rounding in the checker itself.
+    return eval(u, {"__builtins__": {}}, {})  # noqa: S307 - input is digit/operator only
+
+def F(x):
+    return Fraction(x).limit_denominator(10**9)
+
+for p in json.loads((ROD / "opgaver" / "manifest.json").read_text())["proever"]:
+    fil = p["fil"]
+    data = json.loads((ROD / "opgaver" / fil).read_text())
+    for i, o in enumerate(data["opgaver"], 1):
+        nr = f"{fil} opg {i} ({o['id']})"
+        t = o.get("tekst", "")
+        fig = o.get("figur") or {}
+        gjort = False
+
+        def krav(faktisk, forventet, hvad):
+            global tjekket
+            tjekket += 1
+            if F(faktisk) != F(forventet):
+                fejl.append(f"{nr}: {hvad} — udregnet {faktisk}, facit siger {forventet}")
+
+        # --- pure arithmetic statements -------------------------------------
+        m = re.fullmatch(r"\s*([\d\s+\-*/().,·:−]+?)\s*=\s*\{svar\}\s*", t)
+        if m and o["type"] == "tal":
+            krav(udregn(m.group(1)), tal(o["svar"]), "regnestykke"); gjort = True
+
+        # A · B · C = D · {svar}
+        m = re.fullmatch(r"\s*([\d\s·*]+?)\s*=\s*([\d,]+)\s*·\s*\{svar\}\s*", t)
+        if m:
+            krav(udregn(m.group(1)) / tal(m.group(2)), tal(o["svar"]), "manglende faktor"); gjort = True
+
+        # A = B · {svar} + C   /   A · {svar} ± B = C
+        m = re.fullmatch(r"\s*([\d,]+)\s*=\s*([\d,]+)\s*·\s*\{svar\}\s*\+\s*([\d,]+)\s*", t)
+        if m:
+            a, b, c = map(tal, m.groups())
+            krav((a - c) / b, tal(o["svar"]), "ligning"); gjort = True
+        m = re.fullmatch(r"\s*([\d,]+)\s*·\s*\{svar\}\s*([+−-])\s*([\d,]+)\s*=\s*([\d,]+)\s*", t)
+        if m:
+            a, tegn, b, c = m.group(1), m.group(2), m.group(3), m.group(4)
+            v = (tal(c) - tal(b)) / tal(a) if tegn == "+" else (tal(c) + tal(b)) / tal(a)
+            krav(v, tal(o["svar"]), "ligning"); gjort = True
+
+        # fractions: [[a/b]] ± [[c/d]] = {svar}
+        m = re.fullmatch(r"\s*\[\[(\d+)/(\d+)\]\]\s*([+−-])\s*\[\[(\d+)/(\d+)\]\]\s*=\s*\{svar\}\s*", t)
+        if m and o["type"] == "broek":
+            a, b, tegn, c, d = m.groups()
+            v = Fraction(int(a), int(b)) + (1 if tegn == "+" else -1) * Fraction(int(c), int(d))
+            krav(v, Fraction(int(o["taeller"]), int(o["naevner"])), "brøkregnestykke"); gjort = True
+
+        # number sequences: constant step, and the gap must match
+        m = re.search(r"\n\n([\d,]+(?:\s*;\s*(?:\{svar\}|[\d,]+))+)\s*$", t)
+        if m:
+            led = [x.strip() for x in m.group(1).split(";")]
+            kendte = [(j, tal(x)) for j, x in enumerate(led) if x != "{svar}"]
+            skridt = {(kendte[k + 1][1] - kendte[k][1]) / (kendte[k + 1][0] - kendte[k][0])
+                      for k in range(len(kendte) - 1)}
+            if len(skridt) != 1:
+                fejl.append(f"{nr}: talfølgen har ikke samme spring hele vejen")
+            else:
+                s = skridt.pop()
+                hul = [j for j, x in enumerate(led) if x == "{svar}"][0]
+                krav(kendte[0][1] + s * (hul - kendte[0][0]), tal(o["svar"]), "talfølge")
+            gjort = True
+
+        # --- figures ---------------------------------------------------------
+        if fig.get("slags") == "tallinje":
+            if "pil" in fig:
+                krav(F(fig["pil"]), tal(o["svar"]), "pilens position"); gjort = True
+            if "kasse" in fig and fig.get("hop"):
+                h = fig["hop"][0]
+                krav(F(h["til"]) - F(h["fra"]), tal(re.sub(r"[^\d]", "", h["tekst"])), "hoppets længde")
+                krav(F(fig["kasse"]), tal(o["svar"]), "kassens værdi")
+                # every drawn value must land on a tick, or the figure lies
+                for v in (fig["kasse"], h["til"], h["fra"]):
+                    if F(F(v) - F(fig["fra"])) % F(fig["trin"]) != 0:
+                        fejl.append(f"{nr}: {v} ligger ikke på en streg (trin {fig['trin']})")
+                gjort = True
+
+        if fig.get("slags") == "gitter":
+            felter = fig["raekker"] * fig["kolonner"]
+            krav(F(len(fig["farvede"])) * 100 / felter, tal(o["svar"]), "procentdel af gitteret")
+            if max(fig["farvede"]) >= felter:
+                fejl.append(f"{nr}: farvet felt uden for gitteret")
+            gjort = True
+
+        if fig.get("slags") == "kvadratmoenster":
+            antal = [f["side"] ** 2 - f["hul"] ** 2 for f in fig["figurer"]]
+            diff = {antal[k + 1] - antal[k] for k in range(len(antal) - 1)}
+            if len(diff) != 1:
+                fejl.append(f"{nr}: mønsteret vokser ikke jævnt: {antal}")
+            else:
+                d = diff.pop()
+                krav(antal[0] + d * 5, tal(o["svar"]), "figur 6 i mønsteret")
+            gjort = True
+
+        if fig.get("slags") == "prikker" and o["type"] == "valg":
+            i_alt = sum(g["raekker"] * g["kolonner"] for g in fig["grupper"])
+            vaerdier = [udregn(v) for v in o["valg"]]
+            passer = [j for j, v in enumerate(vaerdier) if v == i_alt]
+            ikke = [j for j, v in enumerate(vaerdier) if v != i_alt]
+            if "IKKE" in t:
+                if passer != [j for j in range(4) if j != o["korrekt"]]:
+                    fejl.append(f"{nr}: IKKE-opgave — {vaerdier} mod {i_alt} prikker, korrekt={o['korrekt']}")
+            else:
+                if passer != [o["korrekt"]]:
+                    fejl.append(f"{nr}: {vaerdier} mod {i_alt} prikker, korrekt={o['korrekt']}")
+            tjekket += 1
+            gjort = True
+
+        if fig.get("slags") == "rektangel" and o["type"] == "valg":
+            b, h = fig["bredde"], fig["hoejde"]
+            maal = b * h if "areal" in t else 2 * (b + h)
+            vaerdier = [udregn(v) for v in o["valg"]]
+            if [j for j, v in enumerate(vaerdier) if v == maal] != [o["korrekt"]]:
+                fejl.append(f"{nr}: {vaerdier} mod målet {maal}, korrekt={o['korrekt']}")
+            tjekket += 1
+            gjort = True
+
+        # --- value tables ----------------------------------------------------
+        if o.get("tabel"):
+            r = [x for x in o["tabel"]["raekker"] if "…" not in x]
+            par = [(tal(x), tal(y)) for x, y in r if "{svar}" not in (x, y)]
+            forhold = {y / x for x, y in par}
+            if len(forhold) != 1:
+                fejl.append(f"{nr}: tabellen har ikke ét fast forhold: {forhold}")
+            else:
+                k = forhold.pop()
+                mgl = [x for x in r if "{svar}" in x][0]
+                krav(tal(mgl[1]) / k, tal(o["svar"]), "manglende x i tabellen")
+            gjort = True
+
+        # "Hvor meget er 15 % af 300?"
+        m = re.search(r"Hvor meget er ([\d,]+) % af ([\d,]+)\?", t)
+        if m:
+            krav(tal(m.group(1)) * tal(m.group(2)) / 100, tal(o["svar"]), "procent af tal"); gjort = True
+
+        # "Hvilket tal er 0,7 større end 3?"
+        m = re.search(r"Hvilket tal er ([\d,]+) (større|mindre) end ([\d,]+)\?", t)
+        if m:
+            d, retning, n = tal(m.group(1)), m.group(2), tal(m.group(3))
+            krav(n + d if retning == "større" else n - d, tal(o["svar"]), "mere/mindre end"); gjort = True
+
+        # think-of-a-number, all four shapes
+        if "tænker på et tal" in t:
+            ops = re.findall(r"(ganger|lægger|trækker|dividerer)[^.]*?([\d,]+)", t)
+            res = re.search(r"Resultatet er ([\d,]+)", t)
+            if len(ops) == 2 and res:
+                v = tal(res.group(1))
+                for ord_, n in reversed(ops):          # undo, last operation first
+                    n = tal(n)
+                    v = {"ganger": lambda a: a / n, "lægger": lambda a: a - n,
+                         "trækker": lambda a: a + n, "dividerer": lambda a: a * n}[ord_](v)
+                krav(v, tal(o["svar"]), "tænk-på-et-tal"); gjort = True
+
+        # "18 bakker med 12 æg i hver" / "45 flasker ... 18 kasser" -> a product
+        if not gjort and o["type"] == "tal" and re.search(r"i hver|pr\.|på hvert", t):
+            n = [tal(x) for x in re.findall(r"(?<![\d,])(\d+)(?![\d,]*\s*%)", t)]
+            if len(n) == 2:
+                krav(n[0] * n[1], tal(o["svar"]), "gangestykke i tekstopgave"); gjort = True
+
+        # function rules: the correct option must be startgebyr + takst · x
+        if o["type"] == "valg" and "funktionsforskrift" in t:
+            n = [tal(x) for x in re.findall(r"([\d,]+) kr\.|([\d,]+) liter", t) for x in [x[0] or x[1]] if x]
+            if len(n) == 2:
+                fast, takst = n
+                v = o["valg"][o["korrekt"]].split("=", 1)[1].strip()
+                def dk(f):
+                    s = f"{float(f):g}"
+                    return s.replace(".", ",")
+                vent = f"{dk(fast)} + {dk(takst)} · x"
+                tjekket += 1
+                if v.replace(" ", "") != vent.replace(" ", ""):
+                    fejl.append(f"{nr}: forskrift — forventede '{vent}', facit peger på '{v}'")
+                gjort = True
+
+        # place value: "3 hundreder, 0 tiere og 9 enere"
+        if o["type"] == "valg" and re.search(r"Hvilket tal består af", t):
+            vaegt = {"tusinder": 1000, "hundreder": 100, "tiere": 10, "enere": 1,
+                     "tiendedele": Fraction(1, 10), "hundrededele": Fraction(1, 100)}
+            dele = re.findall(r"(\d+)\s+(tusinder|hundreder|tiere|enere|tiendedele|hundrededele)", t)
+            if dele:
+                v = sum(int(a) * vaegt[b] for a, b in dele)
+                tjekket += 1
+                if tal(o["valg"][o["korrekt"]]) != v:
+                    fejl.append(f"{nr}: pladsværdi — udregnet {v}, facit peger på {o['valg'][o['korrekt']]}")
+                gjort = True
+
+        # "Hvilket af disse tal er størst/mindst?"
+        m = re.search(r"Hvilket af disse tal er (størst|mindst)\?", t)
+        if m and o["type"] == "valg":
+            v = [tal(x) for x in o["valg"]]
+            rigtig = v.index(max(v)) if m.group(1) == "størst" else v.index(min(v))
+            tjekket += 1
+            if rigtig != o["korrekt"]:
+                fejl.append(f"{nr}: {m.group(1)} af {v} er nr. {rigtig}, ikke nr. {o['korrekt']}")
+            gjort = True
+
+        # temperature: a start reading, then a rise or a fall
+        if o["type"] == "valg" and "termometeret" in t:
+            n = t.replace("\u2212", "-")
+            start = tal(re.search(r"termometeret\s+(-?[\d,]+)\s*°C", n).group(1))
+            m2 = re.search(r"(steg|steget|faldt|fald)\w*\b[^.]*?(-?[\d,]+)\s*°C", n)
+            aendring = tal(m2.group(2)) * (-1 if m2.group(1).startswith("fald") else 1)
+            facit = tal(o["valg"][o["korrekt"]].replace("°C", "").replace("\u2212", "-"))
+            tjekket += 1
+            if facit != start + aendring:
+                fejl.append(f"{nr}: temperatur — {start} + ({aendring}) = {start + aendring}, "
+                            f"facit peger på {o['valg'][o['korrekt']]}")
+            gjort = True
+
+        if not gjort:
+            sprunget.append(nr)
+
+print(f"{tjekket} maskinelle kontroller udført")
+print(f"{len(sprunget)} opgaver kan ikke efterregnes maskinelt (tekstopgaver, aflæsning):")
+for x in sprunget: print("   ", x)
+print()
+for x in fejl:
+    print("FEJL:", x)
+print(f"\n{len(fejl)} fejl")

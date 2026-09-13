@@ -1,0 +1,121 @@
+{
+  "titel": "Prøve 10",
+  "varighed": 45,
+  "opgaver": [
+    { "id": "k1", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvilket tal peger pilen på?** {svar}",
+      "figur": { "slags": "tallinje", "fra": 9.1, "til": 9.2, "trin": 0.01, "labels": [9.1, 9.15, 9.2], "pil": 9.16, "alt": "en tallinje fra 9,1 til 9,2, hvor inddelingen har værdien 0,01. Pilen peger på seks dele efter 9,1" },
+      "svar": "9,16",
+      "forklaring": "Hvert mellemrum er 0,01. Pilen står 6 mellemrum efter 9,1: 9,1 + 0,06 = 9,16." },
+
+    { "id": "k2", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "7654 + 1899 = {svar}",
+      "svar": "9553",
+      "forklaring": "1899 er tæt på 1900. Læg 1900 til og træk 1 fra: 7654 + 1900 = 9554, og 9554 − 1 = 9553." },
+
+    { "id": "k3", "type": "tal", "omraade": "algebra",
+      "tekst": "Figurerne vokser efter et mønster.\n\n**Hvor mange blå tern er der i figur 6?** {svar}",
+      "figur": { "slags": "kvadratmoenster", "figurer": [ { "side": 4, "hul": 1, "navn": "Figur 1" }, { "side": 5, "hul": 2, "navn": "Figur 2" }, { "side": 6, "hul": 3, "navn": "Figur 3" } ], "alt": "Tre figurer bygget af tern. Figur 1 er et kvadrat med sidelængden fire og et hul i midten på en gange en. Figur 2 er et kvadrat med sidelængden fem og et hul i midten på to gange to. Figur 3 er et kvadrat med sidelængden seks og et hul i midten på tre gange tre" },
+      "svar": "45",
+      "forklaring": "Tæl ternene: figur 1 har 16 − 1 = 15, figur 2 har 25 − 4 = 21, figur 3 har 36 − 9 = 27. Der kommer 6 tern til hver gang.\n\nSå fortsætter det: 33, 39, 45. Figur 6 har 45 tern." },
+
+    { "id": "k4", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "**Hvor stor en procentdel af figuren er blå?** {svar} %",
+      "figur": { "slags": "gitter", "raekker": 4, "kolonner": 6, "farvede": [0,1,2,3,4,5], "alt": "en figur der består af 4 rækker med 6 felter i hver række. 1 af rækkerne er farvet blå" },
+      "svar": "25",
+      "forklaring": "Figuren har 4 · 6 = 24 felter, og 6 af dem er blå. 6 ud af 24 er [[6/24]] = [[1/4]], og en fjerdedel er 25 %." },
+
+    { "id": "k5", "type": "valg", "omraade": "tal",
+      "tekst": "**Hvilket af disse tal er størst?**",
+      "valg": ["3,08", "3,8", "3,079", "3,1"], "korrekt": 1,
+      "forklaring": "Skriv dem med lige mange decimaler: 3,080 · 3,800 · 3,079 · 3,100. Nu ses det, at 3,8 er størst.\n\nFælden er, at 3,079 har flest cifre, men 3,8 har 8 tiendedele mod kun 0 tiendedele i 3,079." },
+
+    { "id": "k6", "type": "broek", "omraade": "regnestrategier",
+      "tekst": "[[2/3]] − [[1/6]] = {svar}",
+      "taeller": "1", "naevner": "2",
+      "forklaring": "Lav [[2/3]] om til sjettedele: gang tæller og nævner med 2, så [[2/3]] = [[4/6]].\n\nSå er [[4/6]] − [[1/6]] = [[3/6]], og [[3/6]] kan forkortes til [[1/2]]. Begge skrivemåder tæller som rigtige." },
+
+    { "id": "k7", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "12000 − 7845 = {svar}",
+      "svar": "4155",
+      "forklaring": "Tæl op fra 7845: til 7900 er der 55, til 8000 er der 100 mere, og til 12000 er der 4000 mere. Tilsammen 55 + 100 + 4000 = 4155." },
+
+    { "id": "k8", "type": "tal", "omraade": "algebra",
+      "tekst": "5 · 4 · 6 = 20 · {svar}",
+      "svar": "6",
+      "forklaring": "Venstre side er 5 · 4 · 6 = 120. Højre side skal give 120: 120 : 20 = 6.\n\nDu kan også se det direkte: 5 · 4 = 20, og 6-tallet står tilbage." },
+
+    { "id": "k9", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvilket tal er 0,35 mindre end 2?** {svar}",
+      "svar": "1,65",
+      "forklaring": "Tænk på 2 som 2,00. Så er 2,00 − 0,35 = 1,65.\n\nEller tæl op fra 0,35 til 2: der er 0,65 op til 1, og så 1 mere. 1 + 0,65 = 1,65." },
+
+    { "id": "k10", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "Til en turnering er der 32 hold med 18 spillere på hvert hold.\n\n**Hvor mange spillere er der i alt?** {svar}",
+      "svar": "576",
+      "forklaring": "32 · 18 kan deles op: 32 · 20 = 640, og så trækkes 32 · 2 = 64 fra: 640 − 64 = 576.\n\nDu kan også regne 30 · 18 = 540 og 2 · 18 = 36, og 540 + 36 = 576." },
+
+    { "id": "k11", "type": "tal", "omraade": "algebra",
+      "tekst": "I tabellen er der sammenhæng mellem x- og y-værdierne.\n\n**Hvilket tal skal der stå i det tomme felt?**",
+      "tabel": { "hoved": ["x", "y"], "raekker": [["1","13"],["2","26"],["3","39"],["4","52"],["5","65"],["…","…"],["{svar}","390"]] },
+      "svar": "30",
+      "forklaring": "y er altid 13 gange x: 2 · 13 = 26, 4 · 13 = 52.\n\nNår y = 390, er x = 390 : 13 = 30." },
+
+    { "id": "k12", "type": "valg", "omraade": "regnestrategier", "grid2": true,
+      "tekst": "Om aftenen viste termometeret −7 °C.\nI løbet af natten faldt temperaturen 6 °C.\n\n**Hvad viste termometeret om morgenen?**",
+      "valg": ["1 °C", "−1 °C", "13 °C", "−13 °C"], "korrekt": 3,
+      "forklaring": "Når det bliver koldere, går du længere ned under nul: −7 − 6 = −13.\n\nDet er let at komme til at trække forkert vej og svare −1. Tegn en tallinje og tæl 6 skridt til venstre fra −7." },
+
+    { "id": "k13", "type": "tal", "omraade": "tal",
+      "tekst": "Diagrammet viser, hvor mange flasker fire klasser har samlet ind.\n\n**Hvor mange flasker samlede 7.a og 7.c tilsammen?** {svar}",
+      "figur": { "slags": "soejler", "data": [ { "navn": "7.a", "v": 45 }, { "navn": "7.b", "v": 30 }, { "navn": "7.c", "v": 55 }, { "navn": "7.d", "v": 40 } ], "alt": "et søjlediagram med fire søjler. 7.a har samlet 45 flasker, 7.b har samlet 30 flasker, 7.c har samlet 55 flasker, og 7.d har samlet 40 flasker" },
+      "figurFoer": true,
+      "svar": "100",
+      "forklaring": "Aflæs de to søjler: 7.a har 45 flasker, og 7.c har 55 flasker.\n\n45 + 55 = 100 flasker. Pas på kun at lægge de to rigtige søjler sammen — ikke alle fire." },
+
+    { "id": "k14", "type": "tal", "omraade": "algebra",
+      "tekst": "6 · {svar} − 14 = 40",
+      "svar": "9",
+      "forklaring": "Læg 14 til begge sider: 6 · x = 54. Divider med 6: x = 9.\n\nTjek: 6 · 9 − 14 = 54 − 14 = 40. ✓" },
+
+    { "id": "k15", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "**Hvor meget er 30 % af 720?** {svar}",
+      "svar": "216",
+      "forklaring": "10 % af 720 er 72, så 30 % er 3 · 72 = 216." },
+
+    { "id": "k16", "type": "tal", "omraade": "algebra",
+      "tekst": "**Skriv det tal, der mangler i talfølgen.**\n\n4 ; 3,6 ; 3,2 ; {svar} ; 2,4 ; 2",
+      "svar": "2,8",
+      "forklaring": "Der trækkes 0,4 fra hver gang: 4 → 3,6 → 3,2 → 2,8 → 2,4 → 2.\n\nEn talfølge med samme spring hver gang svarer til en lineær sammenhæng." },
+
+    { "id": "k17", "type": "valg", "omraade": "algebra",
+      "tekst": "Tegningen viser et rektangel med sidelængderne 9 og 2.\n\n**Hvilket regneudtryk kan man bruge til at udregne rektanglets omkreds?**",
+      "figur": { "slags": "rektangel", "bredde": 9, "hoejde": 2, "labelB": "9", "labelH": "2", "alt": "et rektangel med sidelængderne 9 og 2" },
+      "figurFoer": true,
+      "valg": ["2 · (9 + 2)", "9 · 2", "9 + 2", "2 · 9 + 2"], "korrekt": 0,
+      "forklaring": "Omkredsen er 9 + 2 + 9 + 2 = 22, altså to gange (9 + 2): 2 · 11 = 22.\n\n9 · 2 = 18 er arealet. Og 2 · 9 + 2 = 20 er forkert, fordi parentesen mangler — man ganger før man lægger sammen." },
+
+    { "id": "k18", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "5688 : 6 = {svar}",
+      "svar": "948",
+      "forklaring": "Del op i tal, der er lette at dividere: 5688 = 5400 + 240 + 48. Så er 5400 : 6 = 900, 240 : 6 = 40 og 48 : 6 = 8. Tilsammen 948.\n\nTjek: 948 · 6 = 5688. ✓" },
+
+    { "id": "k19", "type": "valg", "omraade": "algebra",
+      "tekst": "En scooter koster 4500 kr. i udbetaling og derefter 350 kr. om måneden.\n\n**Hvilken funktionsforskrift viser den samlede pris efter x måneder?**",
+      "valg": ["f(x) = 4500 + 350 · x", "g(x) = 4500 · x + 350", "h(x) = 4850 · x", "p(x) = 4500 · 350 · x"], "korrekt": 0,
+      "forklaring": "Udbetalingen på 4500 kr. betales én gang. De 350 kr. betales hver måned og skal derfor ganges med x.\n\nPrøv med 12 måneder: 4500 + 350 · 12 = 4500 + 4200 = 8700 kr. Udtrykket h(x) = 4850 · x ville opkræve hele udbetalingen hver måned." },
+
+    { "id": "k20", "type": "valg", "omraade": "algebra", "grid2": true,
+      "tekst": "**Hvilket regneudtryk viser det samlede antal prikker?**",
+      "figur": { "slags": "prikker", "grupper": [ { "raekker": 4, "kolonner": 5, "navn": "Figur 1" }, { "raekker": 4, "kolonner": 2, "navn": "Figur 2" } ], "alt": "to figurer med prikker. Figur 1 består af 4 rækker med 5 prikker i hver række. Figur 2 består af 4 rækker med 2 prikker i hver række" },
+      "figurFoer": true,
+      "valg": ["4 · (5 + 2)", "4 · 5 · 2", "5 + 2 + 4", "4 · 20 · 2"], "korrekt": 0,
+      "forklaring": "Begge figurer har 4 rækker. Tilsammen er der 5 + 2 = 7 prikker i hver række, altså 4 · 7 = 28 prikker.\n\nTjek: 20 + 8 = 28. ✓ De andre udtryk giver 40, 11 og 160." },
+
+    { "id": "k21", "type": "tal", "omraade": "algebra",
+      "tekst": "**Hvilket tal skal der stå i den blå firkant?** {svar}",
+      "figur": { "slags": "tallinje", "fra": 0, "til": 100, "trin": 2, "labels": [0, 20, 40, 60, 80, 100], "kasse": 58, "hop": [ { "fra": 58, "til": 96, "tekst": "+38" } ], "alt": "en tallinje med en blå firkant. Tallet der mangler hopper 38 frem på tallinjen og skal være lig med 96" },
+      "svar": "58",
+      "forklaring": "Tallet plus 38 giver 96, så gå baglæns: 96 − 38 = 58.\n\nSom ligning: x + 38 = 96, altså x = 58." }
+  ]
+}

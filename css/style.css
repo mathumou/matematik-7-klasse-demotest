@@ -1,0 +1,298 @@
+/* Matematik 7. klasse - oeveproever. Vanilla CSS, ingen afhaengigheder. */
+
+:root {
+  --blaa:        #1d4ed8;
+  --blaa-moerk:  #1e3a8a;
+  --blaa-lys:    #eff6ff;
+  --blaa-kant:   #bfdbfe;
+  --groen:       #15803d;
+  --groen-lys:   #f0fdf4;
+  --groen-kant:  #bbf7d0;
+  --roed:        #b91c1c;
+  --roed-lys:    #fef2f2;
+  --roed-kant:   #fecaca;
+  --gul-lys:     #fffbeb;
+  --gul-kant:    #fde68a;
+  --tekst:       #1f2937;
+  --tekst-svag:  #6b7280;
+  --kant:        #e5e7eb;
+  --flade:       #ffffff;
+  --bund:        #f8fafc;
+  --radius:      12px;
+  --skygge:      0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --skygge-loft: 0 4px 12px rgba(0,0,0,.08);
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--tekst);
+  background: var(--bund);
+}
+
+.springlink {
+  position: absolute; left: -9999px;
+  background: var(--blaa); color: #fff; padding: .75rem 1rem; z-index: 100;
+}
+.springlink:focus { left: 0; top: 0; }
+
+.ramme { max-width: 820px; margin: 0 auto; padding: 0 1rem; }
+
+/* ---------- Topbjaelke ---------- */
+.top {
+  background: var(--flade);
+  border-bottom: 1px solid var(--kant);
+  padding: .85rem 0;
+  position: sticky; top: 0; z-index: 20;
+}
+.top .ramme { display: flex; align-items: center; gap: 1rem; justify-content: space-between; }
+.top-titel { font-weight: 700; font-size: 1rem; color: var(--blaa-moerk); text-decoration: none; }
+.top-titel span { font-weight: 400; color: var(--tekst-svag); }
+.top-hoejre { display: flex; align-items: center; gap: .75rem; font-size: .9rem; }
+
+/* ---------- Forside ---------- */
+.velkomst {
+  background: var(--flade);
+  border: 1px solid var(--kant);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: var(--skygge);
+}
+.velkomst h1 { margin: 0 0 .5rem; font-size: 1.6rem; line-height: 1.25; color: var(--blaa-moerk); }
+.velkomst p { margin: .5rem 0; color: var(--tekst-svag); }
+.velkomst p strong { color: var(--tekst); }
+
+.fakta { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+.fakta span {
+  background: var(--blaa-lys); color: var(--blaa-moerk);
+  border: 1px solid var(--blaa-kant);
+  border-radius: 999px; padding: .25rem .75rem; font-size: .85rem; font-weight: 500;
+}
+
+/* ---------- Fremgangsoversigt ---------- */
+.fremgang {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  background: var(--flade); border: 1px solid var(--kant);
+  border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1rem;
+}
+.fremgang-tal { font-size: 1.5rem; font-weight: 700; color: var(--blaa); }
+.fremgang-tekst { flex: 1; min-width: 180px; font-size: .92rem; color: var(--tekst-svag); }
+.bjaelke { height: 8px; background: var(--kant); border-radius: 999px; overflow: hidden; width: 100%; margin-top: .4rem; }
+.bjaelke i { display: block; height: 100%; background: var(--groen); border-radius: 999px; transition: width .4s; }
+
+/* ---------- Proeveliste ---------- */
+h2.afsnit { font-size: 1.05rem; margin: 1.75rem 0 .75rem; color: var(--tekst-svag); text-transform: uppercase; letter-spacing: .04em; }
+
+.liste { display: grid; gap: .6rem; }
+
+.kort {
+  display: flex; align-items: center; gap: 1rem;
+  background: var(--flade); border: 1px solid var(--kant);
+  border-radius: var(--radius); padding: .9rem 1.1rem;
+  text-decoration: none; color: inherit;
+  transition: border-color .15s, box-shadow .15s, transform .05s;
+}
+.kort:hover { border-color: var(--blaa-kant); box-shadow: var(--skygge-loft); }
+.kort:active { transform: translateY(1px); }
+.kort:focus-visible { outline: 3px solid var(--blaa); outline-offset: 2px; }
+
+.kort-maerke {
+  flex: 0 0 auto; width: 44px; height: 44px; border-radius: 10px;
+  background: var(--blaa-lys); color: var(--blaa-moerk);
+  display: grid; place-items: center; font-weight: 700; font-size: 1.05rem;
+}
+.kort.officiel .kort-maerke { background: var(--gul-lys); color: #92400e; border: 1px solid var(--gul-kant); }
+.kort.faerdig .kort-maerke { background: var(--groen-lys); color: var(--groen); border: 1px solid var(--groen-kant); }
+
+.kort-krop { flex: 1; min-width: 0; }
+.kort-titel { font-weight: 600; }
+.kort-under { font-size: .87rem; color: var(--tekst-svag); }
+.kort-under .officiel-mrk { color: #92400e; font-weight: 600; }
+
+.kort-hoejre { flex: 0 0 auto; text-align: right; font-size: .87rem; color: var(--tekst-svag); }
+.kort-score { font-weight: 700; font-size: 1.05rem; color: var(--groen); }
+.kort-score.lav { color: var(--tekst-svag); }
+
+/* ---------- Knapper ---------- */
+.knap {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  font: inherit; font-weight: 600;
+  padding: .7rem 1.4rem; min-height: 48px;
+  border-radius: 10px; border: 1px solid transparent;
+  cursor: pointer; text-decoration: none;
+  transition: background .15s, border-color .15s;
+}
+.knap:focus-visible { outline: 3px solid var(--blaa); outline-offset: 2px; }
+.knap-primaer  { background: var(--blaa); color: #fff; }
+.knap-primaer:hover { background: var(--blaa-moerk); }
+.knap-sekundaer { background: var(--flade); color: var(--tekst); border-color: var(--kant); }
+.knap-sekundaer:hover { border-color: var(--tekst-svag); }
+.knap-fare { background: var(--flade); color: var(--roed); border-color: var(--roed-kant); }
+.knap-fare:hover { background: var(--roed-lys); }
+.knap[disabled] { opacity: .45; cursor: not-allowed; }
+.knap-raekke { display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; }
+
+/* ---------- Proevesiden ---------- */
+.proeve-top {
+  background: var(--flade); border-bottom: 1px solid var(--kant);
+  position: sticky; top: 0; z-index: 20; padding: .7rem 0;
+}
+.proeve-top .ramme { display: flex; align-items: center; gap: 1rem; justify-content: space-between; }
+.tael { font-weight: 600; font-size: .95rem; }
+.ur { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--tekst-svag); }
+.ur.advarsel { color: var(--roed); }
+
+.skridt { display: flex; gap: 3px; padding: .5rem 0 0; width: 100%; flex: 1 1 100%; }
+.skridt b {
+  flex: 1; height: 5px; border-radius: 999px; background: var(--kant);
+}
+.skridt b.svaret { background: var(--blaa); }
+.skridt b.nu { background: var(--blaa-moerk); }
+
+/* ---------- Opgave ---------- */
+.opgave {
+  background: var(--flade); border: 1px solid var(--kant);
+  border-radius: var(--radius); padding: 1.5rem; margin: 1.25rem 0;
+  box-shadow: var(--skygge);
+}
+.opgave-nr { font-size: .85rem; color: var(--tekst-svag); margin-bottom: .5rem; }
+.opgave-tekst { font-size: 1.15rem; line-height: 1.7; margin-bottom: 1rem; }
+.opgave-tekst .spg { font-weight: 700; }
+.opgave-tekst p { margin: .4rem 0; }
+
+figure.figur { margin: 1.25rem 0; text-align: center; }
+figure.figur svg { max-width: 100%; height: auto; }
+
+/* Indtastning */
+.svarfelt {
+  font: inherit; font-size: 1.15rem; font-weight: 600;
+  width: 6.5rem; padding: .5rem .6rem; text-align: center;
+  border: 2px solid var(--blaa-kant); border-radius: 8px;
+  background: var(--blaa-lys); color: var(--blaa-moerk);
+  vertical-align: middle; margin: 0 .15rem;
+}
+.svarfelt:focus { outline: none; border-color: var(--blaa); background: #fff; }
+.svarfelt.smal { width: 4rem; }
+
+/* Broek-input */
+.broek-svar { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; gap: 2px; margin: 0 .2rem; }
+.broek-svar .streg { width: 100%; height: 2px; background: var(--blaa-moerk); }
+
+/* Broek i tekst */
+.broek { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: .82em; line-height: 1.15; margin: 0 .18em; position: relative; top: -.08em; }
+.broek .t { border-bottom: 1.5px solid currentColor; padding: 0 .25em; }
+.broek .n { padding: 0 .25em; }
+
+/* Svarmuligheder */
+.valg { display: grid; gap: .55rem; margin-top: 1rem; }
+.valg.grid2 { grid-template-columns: 1fr 1fr; }
+.valg label {
+  display: flex; align-items: center; gap: .8rem;
+  border: 2px solid var(--kant); border-radius: 10px;
+  padding: .85rem 1rem; cursor: pointer; background: var(--flade);
+  min-height: 52px; transition: border-color .12s, background .12s;
+}
+.valg label:hover { border-color: var(--blaa-kant); background: var(--blaa-lys); }
+.valg input { width: 20px; height: 20px; accent-color: var(--blaa); flex: 0 0 auto; }
+.valg input:checked + span { font-weight: 600; }
+.valg label:has(input:checked) { border-color: var(--blaa); background: var(--blaa-lys); }
+.valg label:focus-within { outline: 3px solid var(--blaa); outline-offset: 2px; }
+.valg-tekst { font-size: 1.08rem; }
+
+/* Navigation */
+.nav-raekke { display: flex; justify-content: space-between; gap: .75rem; margin: 1.25rem 0 2rem; }
+
+.hjaelp { font-size: .87rem; color: var(--tekst-svag); margin-top: .75rem; }
+
+/* ---------- Resultat ---------- */
+.resultat-top {
+  background: var(--flade); border: 1px solid var(--kant); border-radius: var(--radius);
+  padding: 2rem 1.5rem; text-align: center; margin: 1.5rem 0; box-shadow: var(--skygge);
+}
+.resultat-score { font-size: 3.2rem; font-weight: 800; line-height: 1; color: var(--blaa); }
+.resultat-score small { font-size: 1.4rem; color: var(--tekst-svag); font-weight: 600; }
+.resultat-ord { font-size: 1.2rem; font-weight: 600; margin-top: .6rem; }
+.resultat-meta { color: var(--tekst-svag); font-size: .92rem; margin-top: .5rem; }
+
+.omraade-liste { display: grid; gap: .5rem; margin: 1.25rem 0; text-align: left; }
+.omraade { display: flex; align-items: center; gap: .75rem; font-size: .92rem; }
+.omraade-navn { flex: 0 0 11rem; }
+.omraade .bjaelke { margin: 0; flex: 1; }
+.omraade-tal { flex: 0 0 3.5rem; text-align: right; font-variant-numeric: tabular-nums; color: var(--tekst-svag); }
+
+.gennemgang h2 { font-size: 1.2rem; margin: 2rem 0 1rem; }
+.gen-opgave {
+  background: var(--flade); border: 1px solid var(--kant);
+  border-left: 5px solid var(--kant);
+  border-radius: var(--radius); padding: 1.1rem 1.25rem; margin-bottom: .75rem;
+}
+.gen-opgave.rigtig { border-left-color: var(--groen); }
+.gen-opgave.forkert { border-left-color: var(--roed); }
+.gen-opgave.ubesvaret { border-left-color: #d1d5db; }
+.gen-hoved { display: flex; align-items: center; gap: .6rem; font-size: .85rem; color: var(--tekst-svag); margin-bottom: .5rem; }
+.gen-status { font-weight: 700; }
+.gen-opgave.rigtig .gen-status { color: var(--groen); }
+.gen-opgave.forkert .gen-status { color: var(--roed); }
+.gen-tekst { font-size: 1.02rem; margin-bottom: .75rem; }
+.gen-svar { font-size: .95rem; margin: .3rem 0; }
+.gen-svar b { font-variant-numeric: tabular-nums; }
+.dit-svar-forkert { color: var(--roed); text-decoration: line-through; }
+.rigtigt-svar { color: var(--groen); font-weight: 700; }
+.forklaring {
+  background: var(--blaa-lys); border: 1px solid var(--blaa-kant);
+  border-radius: 8px; padding: .8rem 1rem; margin-top: .75rem; font-size: .95rem;
+}
+.forklaring b { color: var(--blaa-moerk); }
+.gen-opgave figure.figur { margin: .75rem 0; }
+.gen-opgave figure.figur svg { max-width: 300px; }
+
+/* ---------- Dialog ---------- */
+.overlag {
+  position: fixed; inset: 0; background: rgba(15,23,42,.5);
+  display: grid; place-items: center; padding: 1rem; z-index: 50;
+}
+.dialog {
+  background: var(--flade); border-radius: var(--radius); padding: 1.5rem;
+  max-width: 440px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,.2);
+}
+.dialog h2 { margin: 0 0 .75rem; font-size: 1.2rem; }
+.dialog p { margin: .5rem 0 1.25rem; color: var(--tekst-svag); }
+
+/* ---------- Bund ---------- */
+.bund {
+  margin: 3rem 0 2rem; padding-top: 1.5rem; border-top: 1px solid var(--kant);
+  font-size: .85rem; color: var(--tekst-svag);
+}
+.bund a { color: var(--blaa); }
+.bund p { margin: .4rem 0; }
+
+/* ---------- Smaa skaerme ---------- */
+@media (max-width: 520px) {
+  body { font-size: 16px; }
+  .opgave { padding: 1.1rem; }
+  .opgave-tekst { font-size: 1.08rem; }
+  .valg.grid2 { grid-template-columns: 1fr; }
+  .velkomst h1 { font-size: 1.35rem; }
+  .resultat-score { font-size: 2.6rem; }
+  .omraade-navn { flex-basis: 8rem; font-size: .85rem; }
+  .kort { padding: .8rem .9rem; gap: .8rem; }
+  .knap { padding: .7rem 1rem; }
+  .nav-raekke .knap { flex: 1; }
+}
+
+/* ---------- Vaerditabel ---------- */
+.vaerditabel {
+  border-collapse: collapse; margin: 1rem auto; font-size: 1.05rem;
+}
+.vaerditabel th, .vaerditabel td {
+  border: 1.5px solid var(--tekst); padding: .4rem .9rem; text-align: center; min-width: 3.5rem;
+}
+.vaerditabel th { background: var(--blaa-lys); font-style: italic; }
+.vaerditabel .svarfelt { width: 4.5rem; font-size: 1rem; padding: .3rem; }

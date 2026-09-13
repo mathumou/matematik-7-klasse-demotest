@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "fag": "Matematiske færdigheder – tal, regnestrategier og algebra",
+  "klassetrin": 7,
+  "proever": [
+    { "id": "00", "fil": "proeve-00.json", "maerke": "★", "titel": "Prøve 0 – officiel demoprøve", "undertitel": "Ministeriets egen demoprøve", "antal": 21, "officiel": true },
+    { "id": "01", "fil": "proeve-01.json", "maerke": "1", "titel": "Prøve 1", "undertitel": "Bred øveprøve", "antal": 21, "officiel": false },
+    { "id": "02", "fil": "proeve-02.json", "maerke": "2", "titel": "Prøve 2", "undertitel": "Bred øveprøve", "antal": 21, "officiel": false },
+    { "id": "03", "fil": "proeve-03.json", "maerke": "3", "titel": "Prøve 3", "undertitel": "Bred øveprøve", "antal": 21, "officiel": false },
+    { "id": "04", "fil": "proeve-04.json", "maerke": "4", "titel": "Prøve 4", "undertitel": "Bred øveprøve", "antal": 21, "officiel": false },
+    { "id": "05", "fil": "proeve-05.json", "maerke": "5", "titel": "Prøve 5", "undertitel": "Bred øveprøve", "antal": 21, "officiel": false },
+    { "id": "06", "fil": "proeve-06.json", "maerke": "6", "titel": "Prøve 6", "undertitel": "Bred øveprøve", "antal": 21, "officiel": false },
+    { "id": "07", "fil": "proeve-07.json", "maerke": "7", "titel": "Prøve 7", "undertitel": "Bred øveprøve", "antal": 21, "officiel": false },
+    { "id": "08", "fil": "proeve-08.json", "maerke": "8", "titel": "Prøve 8", "undertitel": "Bred øveprøve", "antal": 21, "officiel": false },
+    { "id": "09", "fil": "proeve-09.json", "maerke": "9", "titel": "Prøve 9", "undertitel": "Bred øveprøve", "antal": 21, "officiel": false },
+    { "id": "10", "fil": "proeve-10.json", "maerke": "10", "titel": "Prøve 10", "undertitel": "Bred øveprøve", "antal": 21, "officiel": false }
+  ]
+}

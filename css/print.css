@@ -1,0 +1,24 @@
+/* Print: a clean worksheet or a printable review to go through on paper. */
+@page { margin: 18mm 15mm; }
+
+body { background: #fff; font-size: 11pt; color: #000; }
+
+.top, .proeve-top, .skridt, .knap, .knap-raekke, .springlink,
+.fremgang, .fakta, .overlag, .bund a { display: none !important; }
+
+.ramme { max-width: none; padding: 0; }
+
+.opgave, .gen-opgave, .resultat-top, .velkomst {
+  box-shadow: none; border: 1px solid #999; break-inside: avoid; page-break-inside: avoid;
+  margin: 0 0 8pt; padding: 8pt 10pt;
+}
+.gen-opgave { border-left-width: 3pt; }
+.gennemgang h2, .velkomst h1 { font-size: 14pt; }
+
+.forklaring { background: #f4f4f4; border: 1px solid #bbb; }
+.svarfelt { border: 1px solid #000; background: #fff; color: #000; min-width: 5rem; }
+.valg label { border: 1px solid #666; min-height: 0; padding: 4pt 8pt; }
+
+figure.figur svg { max-width: 60mm !important; }
+
+a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #555; }

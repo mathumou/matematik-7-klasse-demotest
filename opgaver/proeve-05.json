@@ -1,0 +1,119 @@
+{
+  "titel": "Prøve 5",
+  "varighed": 45,
+  "opgaver": [
+    { "id": "f1", "type": "valg", "omraade": "tal",
+      "tekst": "**Hvilket tal består af 6 enere og 4 hundrededele?**",
+      "valg": ["6,04", "6,4", "60,4", "0,64"], "korrekt": 0,
+      "forklaring": "Enerne står lige før kommaet, og hundrededelene står som den anden decimal. Der er ingen tiendedele, så der skal stå et nul på den plads: 6,04.\n\nI 6,4 sidder 4-tallet på tiendedelspladsen — det er ti gange så meget." },
+
+    { "id": "f2", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "3899 + 4567 = {svar}",
+      "svar": "8466",
+      "forklaring": "3899 er tæt på 3900. Læg 3900 til og træk 1 fra: 4567 + 3900 = 8467, og 8467 − 1 = 8466." },
+
+    { "id": "f3", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "**Hvor stor en procentdel af figuren er blå?** {svar} %",
+      "figur": { "slags": "gitter", "raekker": 5, "kolonner": 5, "farvede": [0,1,2,3,4], "alt": "en figur der består af 5 rækker med 5 felter i hver række. 1 af rækkerne er farvet blå" },
+      "svar": "20",
+      "forklaring": "Figuren har 5 · 5 = 25 felter, og 5 af dem er blå. 5 ud af 25 er [[5/25]] = [[1/5]], og en femtedel er 20 %.\n\nHvert felt er 4 %, så 5 felter er 5 · 4 = 20 %." },
+
+    { "id": "f4", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvilket tal peger pilen på?** {svar}",
+      "figur": { "slags": "tallinje", "fra": 1.1, "til": 1.2, "trin": 0.01, "labels": [1.1, 1.15, 1.2], "pil": 1.12, "alt": "en tallinje fra 1,1 til 1,2, hvor inddelingen har værdien 0,01. Pilen peger på to dele efter 1,1" },
+      "svar": "1,12",
+      "forklaring": "Hvert mellemrum er 0,01. Pilen står 2 mellemrum efter 1,1: 1,1 + 0,02 = 1,12." },
+
+    { "id": "f5", "type": "tal", "omraade": "algebra",
+      "tekst": "**Hvilket tal skal der stå i den blå firkant?** {svar}",
+      "figur": { "slags": "tallinje", "fra": 0, "til": 60, "trin": 4, "labels": [0, 20, 40, 60], "kasse": 24, "hop": [ { "fra": 24, "til": 40, "tekst": "+16" } ], "alt": "en tallinje med en blå firkant. Tallet der mangler hopper 16 frem på tallinjen og skal være lig med 40" },
+      "svar": "24",
+      "forklaring": "Tallet plus 16 giver 40, så gå baglæns: 40 − 16 = 24.\n\nSom ligning: x + 16 = 40, altså x = 24." },
+
+    { "id": "f6", "type": "broek", "omraade": "regnestrategier",
+      "tekst": "[[1/4]] + [[3/8]] = {svar}",
+      "taeller": "5", "naevner": "8",
+      "forklaring": "8 kan deles med 4, så lav [[1/4]] om til ottendedele: gang tæller og nævner med 2, og du får [[2/8]].\n\nSå er [[2/8]] + [[3/8]] = [[5/8]]." },
+
+    { "id": "f7", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "6000 − 3427 = {svar}",
+      "svar": "2573",
+      "forklaring": "Tæl op fra 3427: til 3500 er der 73, til 4000 er der 500 mere, og til 6000 er der 2000 mere. Tilsammen 73 + 500 + 2000 = 2573." },
+
+    { "id": "f8", "type": "tal", "omraade": "algebra",
+      "tekst": "4 · 7 · 3 = 28 · {svar}",
+      "svar": "3",
+      "forklaring": "Venstre side er 4 · 7 · 3 = 84. Højre side skal give 84: 84 : 28 = 3.\n\nDu kan også se det direkte: 4 · 7 = 28, og 3-tallet står tilbage." },
+
+    { "id": "f9", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvilket tal er 0,9 mindre end 7,2?** {svar}",
+      "svar": "6,3",
+      "forklaring": "7,2 − 0,9: træk først 0,2 fra og nå ned til 7, og træk så de sidste 0,7 fra: 7 − 0,7 = 6,3." },
+
+    { "id": "f10", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "22 elever samler flasker ind.\nHver elev samler 35 flasker.\n\n**Hvor mange flasker samler de i alt?** {svar}",
+      "svar": "770",
+      "forklaring": "22 · 35 kan deles op: 20 · 35 = 700 og 2 · 35 = 70. Læg sammen: 700 + 70 = 770." },
+
+    { "id": "f11", "type": "tal", "omraade": "algebra",
+      "tekst": "I tabellen er der sammenhæng mellem x- og y-værdierne.\n\n**Hvilket tal skal der stå i det tomme felt?**",
+      "tabel": { "hoved": ["x", "y"], "raekker": [["1","8"],["2","16"],["3","24"],["4","32"],["5","40"],["…","…"],["{svar}","240"]] },
+      "svar": "30",
+      "forklaring": "y er altid 8 gange x: 3 · 8 = 24, 5 · 8 = 40.\n\nNår y = 240, er x = 240 : 8 = 30." },
+
+    { "id": "f12", "type": "valg", "omraade": "regnestrategier", "grid2": true,
+      "tekst": "Ved midnat viste termometeret −8 °C.\nUd på morgenen var temperaturen steget med 3 °C.\n\n**Hvad viste termometeret om morgenen?**",
+      "valg": ["5 °C", "−5 °C", "11 °C", "−11 °C"], "korrekt": 1,
+      "forklaring": "Fra −8 og 3 frem kommer du til −5. Der mangler stadig 5 grader, før det bliver frostfrit.\n\nDet er stadig under nul, så svaret skal have minus foran." },
+
+    { "id": "f13", "type": "valg", "omraade": "algebra", "grid2": true,
+      "tekst": "**Hvilket regneudtryk viser det samlede antal prikker?**",
+      "figur": { "slags": "prikker", "grupper": [ { "raekker": 4, "kolonner": 4, "navn": "Figur 1" }, { "raekker": 4, "kolonner": 1, "navn": "Figur 2" } ], "alt": "to figurer med prikker. Figur 1 består af 4 rækker med 4 prikker i hver række. Figur 2 består af 4 rækker med 1 prik i hver række" },
+      "figurFoer": true,
+      "valg": ["4 · (4 + 1)", "4 · 4 · 1", "4 + 4 + 1", "4 · 4 · 4 · 1"], "korrekt": 0,
+      "forklaring": "Begge figurer har 4 rækker. Tilsammen er der 4 + 1 = 5 prikker i hver række, altså 4 · 5 = 20 prikker.\n\nTjek: 16 + 4 = 20. ✓ De andre udtryk giver 16, 9 og 64." },
+
+    { "id": "f14", "type": "tal", "omraade": "algebra",
+      "tekst": "5 · {svar} + 8 = 43",
+      "svar": "7",
+      "forklaring": "Træk 8 fra begge sider: 5 · x = 35. Divider med 5: x = 7.\n\nTjek: 5 · 7 + 8 = 35 + 8 = 43. ✓" },
+
+    { "id": "f15", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "**Hvor meget er 60 % af 250?** {svar}",
+      "svar": "150",
+      "forklaring": "10 % af 250 er 25, så 60 % er 6 · 25 = 150.\n\nDu kan også tænke: 50 % er 125, og 10 % er 25. 125 + 25 = 150." },
+
+    { "id": "f16", "type": "tal", "omraade": "tal",
+      "tekst": "**Skriv det tal, der mangler i talfølgen.**\n\n3 ; 2,75 ; 2,5 ; {svar} ; 2 ; 1,75",
+      "svar": "2,25",
+      "forklaring": "Der trækkes 0,25 fra hver gang: 3 → 2,75 → 2,5 → 2,25 → 2 → 1,75.\n\n0,25 er en fjerdedel." },
+
+    { "id": "f17", "type": "valg", "omraade": "algebra",
+      "tekst": "Tegningen viser et rektangel med sidelængderne 10 og 3.\n\n**Hvilket regneudtryk kan man bruge til at udregne rektanglets omkreds?**",
+      "figur": { "slags": "rektangel", "bredde": 10, "hoejde": 3, "labelB": "10", "labelH": "3", "alt": "et rektangel med sidelængderne 10 og 3" },
+      "figurFoer": true,
+      "valg": ["2 · (10 + 3)", "10 · 3", "10 + 3", "2 · 10 + 3"], "korrekt": 0,
+      "forklaring": "Omkredsen er 10 + 3 + 10 + 3 = 26, altså to gange (10 + 3): 2 · 13 = 26.\n\nUden parentes betyder 2 · 10 + 3 kun 20 + 3 = 23, fordi man ganger før man lægger sammen. Parenteserne er derfor nødvendige." },
+
+    { "id": "f18", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "5124 : 4 = {svar}",
+      "svar": "1281",
+      "forklaring": "Del op i tal, der er lette at dividere: 5124 = 4000 + 1120 + 4. Så er 4000 : 4 = 1000, 1120 : 4 = 280 og 4 : 4 = 1. Tilsammen 1281.\n\nTjek: 1281 · 4 = 5124. ✓" },
+
+    { "id": "f19", "type": "valg", "omraade": "algebra",
+      "tekst": "En håndværker tager 450 kr. for at rykke ud og derudover 350 kr. i timen.\n\n**Hvilken funktionsforskrift viser prisen for x timers arbejde?**",
+      "valg": ["f(x) = 450 + 350 · x", "g(x) = 450 · x + 350", "h(x) = 800 · x", "p(x) = 450 · 350 · x"], "korrekt": 0,
+      "forklaring": "Udrykningen på 450 kr. betales én gang. De 350 kr. betales pr. time og skal derfor ganges med x.\n\nPrøv med 3 timer: 450 + 350 · 3 = 450 + 1050 = 1500 kr. Udtrykket h(x) = 800 · x ville opkræve udrykningsgebyret for hver eneste time." },
+
+    { "id": "f20", "type": "tal", "omraade": "algebra",
+      "tekst": "Figurerne vokser efter et mønster.\n\n**Hvor mange blå tern er der i figur 6?** {svar}",
+      "figur": { "slags": "kvadratmoenster", "figurer": [ { "side": 3, "hul": 1, "navn": "Figur 1" }, { "side": 5, "hul": 3, "navn": "Figur 2" }, { "side": 7, "hul": 5, "navn": "Figur 3" } ], "alt": "Tre figurer bygget af tern. Figur 1 er et kvadrat med sidelængden tre og et hul i midten på en gange en. Figur 2 er et kvadrat med sidelængden fem og et hul i midten på tre gange tre. Figur 3 er et kvadrat med sidelængden syv og et hul i midten på fem gange fem" },
+      "svar": "48",
+      "forklaring": "Tæl ternene: figur 1 har 9 − 1 = 8, figur 2 har 25 − 9 = 16, figur 3 har 49 − 25 = 24. Der kommer 8 tern til hver gang.\n\nSå fortsætter det: 32, 40, 48. Figur 6 har 48 tern." },
+
+    { "id": "f21", "type": "tal", "omraade": "algebra",
+      "tekst": "Emma tænker på et tal.\nHun dividerer tallet med 4 og lægger 9 til det, hun får.\nResultatet er 16.\n\n**Hvilket tal tænkte Emma på?** {svar}",
+      "svar": "28",
+      "forklaring": "Regn baglæns fra 16. Træk først 9 fra: 16 − 9 = 7. Før det dividerede hun med 4, så gang: 7 · 4 = 28.\n\nSom ligning: x : 4 + 9 = 16 → x : 4 = 7 → x = 28." }
+  ]
+}
