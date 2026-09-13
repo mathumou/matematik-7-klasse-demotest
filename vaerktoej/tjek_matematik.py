@@ -101,7 +101,11 @@ for p in json.loads((ROD / "opgaver" / "manifest.json").read_text())["proever"]:
 
         if fig.get("slags") == "gitter":
             felter = fig["raekker"] * fig["kolonner"]
-            krav(F(len(fig["farvede"])) * 100 / felter, tal(o["svar"]), "procentdel af gitteret")
+            andel = Fraction(len(fig["farvede"]), felter)
+            if o["type"] == "broek":
+                krav(andel, Fraction(int(o["taeller"]), int(o["naevner"])), "brøkdel af gitteret")
+            else:
+                krav(andel * 100, tal(o["svar"]), "procentdel af gitteret")
             if max(fig["farvede"]) >= felter:
                 fejl.append(f"{nr}: farvet felt uden for gitteret")
             gjort = True
@@ -140,7 +144,7 @@ for p in json.loads((ROD / "opgaver" / "manifest.json").read_text())["proever"]:
             gjort = True
 
         # --- value tables ----------------------------------------------------
-        if o.get("tabel"):
+        if o.get("tabel") and o["type"] == "tal":
             r = [x for x in o["tabel"]["raekker"] if "…" not in x]
             par = [(tal(x), tal(y)) for x, y in r if "{svar}" not in (x, y)]
             forhold = {y / x for x, y in par}
@@ -152,13 +156,86 @@ for p in json.loads((ROD / "opgaver" / "manifest.json").read_text())["proever"]:
                 krav(tal(mgl[1]) / k, tal(o["svar"]), "manglende x i tabellen")
             gjort = True
 
+
+
+        # a missing addend sitting mid-expression: "45 + {svar} = 45", "20 + {svar} = 27,5"
+        sidste = [l for l in t.split("\n") if "{svar}" in l]
+        if sidste and not gjort:
+            m = re.fullmatch(r"\s*([\d,]+)\s*([+\u2212-])\s*\{svar\}\s*=\s*([\d,]+)\s*", sidste[-1])
+            if m:
+                a, tegn, b = tal(m.group(1)), m.group(2), tal(m.group(3))
+                krav(b - a if tegn == "+" else a - b, tal(o["svar"]), "manglende led"); gjort = True
+
+        # "Hvilket udtryk er det samme som 306?"
+        m = re.search(r"Hvilket udtryk er det samme som ([\d,]+)\?", t)
+        if m and o["type"] == "valg":
+            maal = tal(m.group(1))
+            vaerdier = [udregn(v) for v in o["valg"]]
+            tjekket += 1
+            if [j for j, v in enumerate(vaerdier) if v == maal] != [o["korrekt"]]:
+                fejl.append(f"{nr}: {vaerdier} mod målet {maal}, korrekt={o['korrekt']}")
+            gjort = True
+
+        # "Hvilket tal ligger midt imellem 2,5 og 2,6?"
+        m = re.search(r"ligger midt imellem ([\d,\u2212-]+) og ([\d,\u2212-]+)\?", t)
+        if m:
+            krav((tal(m.group(1)) + tal(m.group(2))) / 2, tal(o["svar"]), "midtpunkt"); gjort = True
+
+        # "Løs ligningen. 28 = 3x + 7" or "2x - 1 = 8"
+        if "Løs ligningen" in t:
+            lign = t.replace("\u2212", "-").split("\n")[-1].split("x =")[0].strip()
+            m = re.fullmatch(r"([\d,-]+)\s*=\s*([\d,]*)x\s*([+-])\s*([\d,]+)", lign) or None
+            if m:
+                hoejre, a, tegn, b = m.groups()
+                a = tal(a or "1")
+                v = (tal(hoejre) - tal(b)) / a if tegn == "+" else (tal(hoejre) + tal(b)) / a
+                krav(v, tal(o["svar"]), "ligning"); gjort = True
+            else:
+                m = re.fullmatch(r"([\d,]*)x\s*([+-])\s*([\d,]+)\s*=\s*([\d,-]+)", lign)
+                if m:
+                    a, tegn, b, hoejre = m.groups()
+                    a = tal(a or "1")
+                    v = (tal(hoejre) - tal(b)) / a if tegn == "+" else (tal(hoejre) + tal(b)) / a
+                    krav(v, tal(o["svar"]), "ligning"); gjort = True
+
+        # place-value decomposition: 3,76 = 3 + 0,7 + {svar}
+        m = re.fullmatch(r"\s*([\d,]+)\s*=\s*([\d,]+(?:\s*\+\s*[\d,]+)*)\s*\+\s*\{svar\}\s*", t)
+        if m:
+            helhed = tal(m.group(1))
+            dele = sum(tal(x) for x in m.group(2).split("+"))
+            krav(helhed - dele, tal(o["svar"]), "pladsværdi-opdeling"); gjort = True
+
+        # "1/3 af eleverne" -> a fraction of a quantity
+        m = re.search(r"(\d+) elever[\s\S]{0,40}?\[\[(\d+)/(\d+)\]\] af eleverne", t)
+        if m:
+            krav(Fraction(int(m.group(2)), int(m.group(3))) * int(m.group(1)), tal(o["svar"]),
+                 "brøkdel af et antal"); gjort = True
+
+        # "20 kugler. 4 ... er røde" -> percent from a count
+        m = re.search(r"(\d+) kugler\. (\d+) af kuglerne", t)
+        if m:
+            krav(Fraction(int(m.group(2)), int(m.group(1))) * 100, tal(o["svar"]),
+                 "procentdel af et antal"); gjort = True
+
+        # the square-number table with two blanks
+        if o["type"] == "flerefelter" and o.get("tabel") and "kvadrattal" in o.get("forklaring", ""):
+            r = [x for x in o["tabel"]["raekker"] if "…" not in x]
+            for x, y in r:
+                if x.startswith("{svar"):
+                    j = int(x[5]) - 1
+                    krav(tal(o["felter"][j]["svar"]) ** 2, tal(y), "kvadrattal (baglæns)")
+                elif y.startswith("{svar"):
+                    j = int(y[5]) - 1
+                    krav(tal(x) ** 2, tal(o["felter"][j]["svar"]), "kvadrattal")
+            gjort = True
+
         # "Hvor meget er 15 % af 300?"
         m = re.search(r"Hvor meget er ([\d,]+) % af ([\d,]+)\?", t)
         if m:
             krav(tal(m.group(1)) * tal(m.group(2)) / 100, tal(o["svar"]), "procent af tal"); gjort = True
 
         # "Hvilket tal er 0,7 større end 3?"
-        m = re.search(r"Hvilket tal er ([\d,]+) (større|mindre) end ([\d,]+)\?", t)
+        m = re.search(r"Hvilket tal er ([\d,]+) (større|mindre) end ([−-]?[\d,]+)\?", t)
         if m:
             d, retning, n = tal(m.group(1)), m.group(2), tal(m.group(3))
             krav(n + d if retning == "større" else n - d, tal(o["svar"]), "mere/mindre end"); gjort = True
@@ -190,10 +267,10 @@ for p in json.loads((ROD / "opgaver" / "manifest.json").read_text())["proever"]:
                 def dk(f):
                     s = f"{float(f):g}"
                     return s.replace(".", ",")
-                vent = f"{dk(fast)} + {dk(takst)} · x"
+                vent = [f"{dk(fast)} + {dk(takst)} · x", f"{dk(takst)} · x + {dk(fast)}"]
                 tjekket += 1
-                if v.replace(" ", "") != vent.replace(" ", ""):
-                    fejl.append(f"{nr}: forskrift — forventede '{vent}', facit peger på '{v}'")
+                if v.replace(" ", "") not in [x.replace(" ", "") for x in vent]:
+                    fejl.append(f"{nr}: forskrift — forventede en af {vent}, facit peger på '{v}'")
                 gjort = True
 
         # place value: "3 hundreder, 0 tiere og 9 enere"
@@ -209,7 +286,7 @@ for p in json.loads((ROD / "opgaver" / "manifest.json").read_text())["proever"]:
                 gjort = True
 
         # "Hvilket af disse tal er størst/mindst?"
-        m = re.search(r"Hvilket af disse tal er (størst|mindst)\?", t)
+        m = re.search(r"Hvilket (?:af disse )?tal er (størst|mindst)\?", t)
         if m and o["type"] == "valg":
             v = [tal(x) for x in o["valg"]]
             rigtig = v.index(max(v)) if m.group(1) == "størst" else v.index(min(v))

@@ -205,7 +205,15 @@
     spec.raekker.forEach(function (r) {
       h += '<tr>';
       r.forEach(function (c) {
-        h += '<td>' + (c === '{svar}' ? (svarHtml || '') : tekstKort(c)) + '</td>';
+        var m = /^\{svar(\d?)\}$/.exec(c);
+        if (m) {
+          // A table may hold several blanks: {svar1}, {svar2} …
+          h += '<td>' + (Array.isArray(svarHtml)
+            ? (svarHtml[Number(m[1] || 1) - 1] || '')
+            : (svarHtml || '')) + '</td>';
+        } else {
+          h += '<td>' + tekstKort(c) + '</td>';
+        }
       });
       h += '</tr>';
     });

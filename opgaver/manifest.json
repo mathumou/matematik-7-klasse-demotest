@@ -101,6 +101,15 @@
       "undertitel": "Bred øveprøve",
       "antal": 21,
       "officiel": false
+    },
+    {
+      "id": "11",
+      "fil": "proeve-11.json",
+      "maerke": "11",
+      "titel": "Prøve 11 – andre opgavetyper",
+      "undertitel": "Opgavetyper fra 6. og 8. klasses officielle demoprøver",
+      "antal": 21,
+      "officiel": false
     }
   ]
 }

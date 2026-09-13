@@ -64,11 +64,17 @@
     return false;
   }
 
-  /* Fractions: 6/8 is as correct as 3/4. The official test accepts unreduced answers. */
+  /* Fractions: 6/8 is as correct as 3/4. The official test accepts unreduced answers.
+     Some tasks have no single facit at all — any fraction inside a range counts. */
   function tjekBroek(opg, svar) {
     var t = tilTal(svar && svar.taeller);
     var n = tilTal(svar && svar.naevner);
     if (t === null || n === null || n === 0) return false;
+    if (opg.interval) {
+      var v = t / n;
+      var lav = opg.interval[0], hoej = opg.interval[1];
+      return opg.aabent ? (v > lav && v < hoej) : (v >= lav - 1e-9 && v <= hoej + 1e-9);
+    }
     var ft = tilTal(opg.taeller), fn = tilTal(opg.naevner);
     if (ft === null || fn === null) return false;
     return taetPaa(t * fn, ft * n);
@@ -207,7 +213,10 @@
     if (opg.type === 'flerefelter') {
       return opg.felter.map(function (f) { return f.navn + ' = ' + f.svar; }).join(', ');
     }
-    if (opg.type === 'broek') return opg.taeller + '/' + opg.naevner;
+    if (opg.type === 'broek') {
+      return opg.interval ? (opg.facitVis || 'en brøk mellem ' + visTal(opg.interval[0]) + ' og ' + visTal(opg.interval[1]))
+                          : opg.taeller + '/' + opg.naevner;
+    }
     if (opg.interval) return opg.facitVis || (visTal(opg.interval[0]) + ' – ' + visTal(opg.interval[1]));
     return String(opg.svar);
   }

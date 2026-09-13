@@ -92,8 +92,12 @@ for p in manifest["proever"]:
                     f(fil, nr, f"felt {j} mangler svar")
                 if not felt.get("navn"):
                     f(fil, nr, f"felt {j} mangler navn")
-                if "{svar%d}" % j not in o.get("tekst", ""):
-                    f(fil, nr, "mangler {svar%d} i teksten" % j)
+                maerke = "{svar%d}" % j
+                i_tekst = maerke in o.get("tekst", "")
+                i_tabel = bool(o.get("tabel")) and any(
+                    maerke in c for r in o["tabel"]["raekker"] for c in r)
+                if not (i_tekst or i_tabel):
+                    f(fil, nr, "mangler %s i teksten eller tabellen" % maerke)
         elif t == "ordn":
             el = o.get("elementer") or []
             if len(el) < 3:
@@ -110,8 +114,8 @@ for p in manifest["proever"]:
                 f(fil, nr, "et element kan ikke læses som tal")
         elif t == "valg":
             v = o.get("valg") or []
-            if len(v) != 4:
-                a(fil, f"{nr}: {len(v)} svarmuligheder (den rigtige prøve bruger altid 4)")
+            if not (3 <= len(v) <= 5):
+                a(fil, f"{nr}: {len(v)} svarmuligheder (den rigtige prøve bruger 3-5)")
             k = o.get("korrekt")
             if not isinstance(k, int) or not (0 <= k < len(v)):
                 f(fil, nr, f"korrekt={k!r} peger uden for svarmulighederne")
@@ -120,11 +124,15 @@ for p in manifest["proever"]:
             if len(set(v)) != len(v):
                 f(fil, nr, "to svarmuligheder er ens")
         elif t == "broek":
-            for n in ("taeller", "naevner"):
-                if not str(o.get(n, "")).strip():
-                    f(fil, nr, f"mangler {n}")
-            if str(o.get("naevner")) == "0":
-                f(fil, nr, "nævner er 0")
+            if o.get("interval"):
+                if len(o["interval"]) != 2 or o["interval"][0] >= o["interval"][1]:
+                    f(fil, nr, f"ugyldigt interval: {o['interval']!r}")
+            else:
+                for n in ("taeller", "naevner"):
+                    if not str(o.get(n, "")).strip():
+                        f(fil, nr, f"mangler {n}")
+                if str(o.get("naevner")) == "0":
+                    f(fil, nr, "nævner er 0")
         elif t == "tal":
             if o.get("svar") in (None, "") and not o.get("interval"):
                 f(fil, nr, "mangler svar")
