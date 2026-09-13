@@ -288,8 +288,9 @@ figure.figur svg { max-width: 100%; height: auto; }
 }
 
 /* ---------- Vaerditabel ---------- */
+.tabel-hylster { overflow-x: auto; margin: 1rem 0; }
 .vaerditabel {
-  border-collapse: collapse; margin: 1rem auto; font-size: 1.05rem;
+  border-collapse: collapse; margin: 0 auto; font-size: 1.05rem;
 }
 .vaerditabel th, .vaerditabel td {
   border: 1.5px solid var(--tekst); padding: .4rem .9rem; text-align: center; min-width: 3.5rem;

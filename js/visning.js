@@ -57,7 +57,7 @@
       s += '<line x1="' + vx.toFixed(1) + '" y1="' + (yline - (lang ? 9 : 5)) + '" x2="' + vx.toFixed(1) + '" y2="' + (yline + (lang ? 9 : 5)) + '" stroke="' + MOERK + '" stroke-width="' + (lang ? 2 : 1.2) + '"/>';
       if (lang) {
         var etiket = String(Math.round(v * 1e6) / 1e6).replace('.', ',');
-        s += '<text x="' + vx.toFixed(1) + '" y="' + (yline + 26) + '" text-anchor="middle" font-size="15" font-family="system-ui, sans-serif" fill="' + MOERK + '">' + etiket + '</text>';
+        s += '<text x="' + vx.toFixed(1) + '" y="' + (yline + 26) + '" text-anchor="middle" font-size="19" font-family="system-ui, sans-serif" fill="' + MOERK + '">' + etiket + '</text>';
       }
     }
     if (p.pil !== undefined) {
@@ -74,7 +74,7 @@
       p.hop.forEach(function (hop) {
         var x1 = x(hop.fra), x2 = x(hop.til), mx = (x1 + x2) / 2;
         s += '<path d="M' + x1 + ' ' + (yline - 10) + ' Q ' + mx + ' ' + (yline - 46) + ' ' + x2 + ' ' + (yline - 10) + '" fill="none" stroke="' + BLAA + '" stroke-width="2"/>';
-        s += '<text x="' + mx + '" y="' + (yline - 44) + '" text-anchor="middle" font-size="15" fill="' + BLAA + '" font-weight="600">' + esc(hop.tekst) + '</text>';
+        s += '<text x="' + mx + '" y="' + (yline - 44) + '" text-anchor="middle" font-size="18" fill="' + BLAA + '" font-weight="600">' + esc(hop.tekst) + '</text>';
       });
     }
     return svgHylster(w, h, s, p.alt);
@@ -108,7 +108,7 @@
       }
       var bredde = g.kolonner * c;
       if (g.navn) {
-        s += '<text x="' + (x0 + bredde / 2) + '" y="' + (maxR * c + 34) + '" text-anchor="middle" font-size="15" font-family="system-ui, sans-serif" fill="' + MOERK + '">' + esc(g.navn) + '</text>';
+        s += '<text x="' + (x0 + bredde / 2) + '" y="' + (maxR * c + 34) + '" text-anchor="middle" font-size="19" font-family="system-ui, sans-serif" fill="' + MOERK + '">' + esc(g.navn) + '</text>';
       }
       x0 += bredde + mellem;
       w = x0;
@@ -133,7 +133,7 @@
         }
       }
       if (f.navn) {
-        s += '<text x="' + (x0 + f.side * c / 2) + '" y="' + (maxSide * c + 28) + '" text-anchor="middle" font-size="14" font-family="system-ui, sans-serif" fill="' + MOERK + '">' + esc(f.navn) + '</text>';
+        s += '<text x="' + (x0 + f.side * c / 2) + '" y="' + (maxSide * c + 28) + '" text-anchor="middle" font-size="17" font-family="system-ui, sans-serif" fill="' + MOERK + '">' + esc(f.navn) + '</text>';
       }
       x0 += f.side * c + mellem;
     });
@@ -159,8 +159,8 @@
     data.forEach(function (d) {
       var bh = d.v * skala;
       s += '<rect x="' + x0 + '" y="' + (bund - bh) + '" width="' + bredde + '" height="' + bh + '" fill="' + LYSBLAA + '" stroke="' + BLAA + '" stroke-width="1.5"/>';
-      s += '<text x="' + (x0 + bredde / 2) + '" y="' + (bund - bh - 7) + '" text-anchor="middle" font-size="14" fill="' + MOERK + '">' + esc(String(d.v)) + '</text>';
-      s += '<text x="' + (x0 + bredde / 2) + '" y="' + (bund + 20) + '" text-anchor="middle" font-size="14" fill="' + MOERK + '">' + esc(d.navn) + '</text>';
+      s += '<text x="' + (x0 + bredde / 2) + '" y="' + (bund - bh - 7) + '" text-anchor="middle" font-size="17" fill="' + MOERK + '">' + esc(String(d.v)) + '</text>';
+      s += '<text x="' + (x0 + bredde / 2) + '" y="' + (bund + 20) + '" text-anchor="middle" font-size="17" fill="' + MOERK + '">' + esc(d.navn) + '</text>';
       x0 += bredde + mellem;
     });
     return svgHylster(x0 + 10, h, s, p.alt);
@@ -172,8 +172,8 @@
     var enhed = 42, w = p.bredde * enhed, hgt = p.hoejde * enhed;
     var pad = 34, s = '';
     s += '<rect x="' + pad + '" y="14" width="' + w + '" height="' + hgt + '" fill="' + LYSBLAA + '" stroke="' + BLAA + '" stroke-width="2"/>';
-    s += '<text x="' + (pad + w / 2) + '" y="' + (hgt + 38) + '" text-anchor="middle" font-size="16" font-family="system-ui, sans-serif" fill="' + MOERK + '">' + esc(p.labelB) + '</text>';
-    s += '<text x="' + (pad - 12) + '" y="' + (14 + hgt / 2 + 6) + '" text-anchor="end" font-size="16" font-family="system-ui, sans-serif" fill="' + MOERK + '">' + esc(p.labelH) + '</text>';
+    s += '<text x="' + (pad + w / 2) + '" y="' + (hgt + 38) + '" text-anchor="middle" font-size="18" font-family="system-ui, sans-serif" fill="' + MOERK + '">' + esc(p.labelB) + '</text>';
+    s += '<text x="' + (pad - 12) + '" y="' + (14 + hgt / 2 + 6) + '" text-anchor="end" font-size="18" font-family="system-ui, sans-serif" fill="' + MOERK + '">' + esc(p.labelH) + '</text>';
     return svgHylster(w + pad + 20, hgt + 52, s, p.alt);
   }
 
@@ -195,7 +195,7 @@
   /* Value tables (the x/y task type). */
   function tabel(spec, svarHtml) {
     if (!spec) return '';
-    var h = '<table class="vaerditabel"><thead><tr>';
+    var h = '<div class="tabel-hylster"><table class="vaerditabel"><thead><tr>';
     spec.hoved.forEach(function (c) { h += '<th>' + tekstKort(c) + '</th>'; });
     h += '</tr></thead><tbody>';
     spec.raekker.forEach(function (r) {
@@ -205,7 +205,7 @@
       });
       h += '</tr>';
     });
-    return h + '</tbody></table>';
+    return h + '</tbody></table></div>';
   }
 
   function tekstKort(raa) {
