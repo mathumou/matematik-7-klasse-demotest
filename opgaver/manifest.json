@@ -110,6 +110,24 @@
       "undertitel": "Opgavetyper fra 6. og 8. klasses officielle demoprøver",
       "antal": 21,
       "officiel": false
+    },
+    {
+      "id": "12",
+      "fil": "proeve-12.json",
+      "maerke": "12",
+      "titel": "Prøve 12 – procent og forholdsregning",
+      "undertitel": "Procentregning, rabat, opskrifter, forhold og målestok",
+      "antal": 21,
+      "officiel": false
+    },
+    {
+      "id": "13",
+      "fil": "proeve-13.json",
+      "maerke": "13",
+      "titel": "Prøve 13 – negative tal",
+      "undertitel": "Regning med negative tal, også gange og dividere",
+      "antal": 21,
+      "officiel": false
     }
   ]
 }

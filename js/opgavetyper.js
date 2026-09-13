@@ -40,10 +40,15 @@
     return isNaN(v) ? null : v;
   }
 
-  /* Canonical Danish display form of a number: 3.5 -> "3,5" */
+  /* Canonical Danish display form of a number: 3.5 -> "3,5", -4 -> "\u22124" */
   function visTal(v) {
     if (v === null || v === undefined) return '';
-    return String(v).replace('.', ',');
+    return String(v).replace('.', ',').replace(/^-/, '\u2212');
+  }
+
+  /* Same treatment for a stored answer string. */
+  function pentTal(s) {
+    return String(s).replace(/^-/, '\u2212');
   }
 
   /* Floating point needs a tolerance; 0,1+0,2 must not fail. */
@@ -188,9 +193,9 @@
       case 'ordn':
         return svar.map(function (i) { return opg.elementer[i]; }).join(' ; ');
       case 'flerefelter':
-        return opg.felter.map(function (f, i) { return f.navn + ' = ' + svar[i]; }).join(', ');
+        return opg.felter.map(function (f, i) { return f.navn + ' = ' + pentTal(String(svar[i]).trim()); }).join(', ');
       default:
-        return String(svar).trim();
+        return pentTal(String(svar).trim());
     }
   }
 
@@ -211,14 +216,14 @@
       return r.map(function (i) { return opg.elementer[i]; }).join(' ; ');
     }
     if (opg.type === 'flerefelter') {
-      return opg.felter.map(function (f) { return f.navn + ' = ' + f.svar; }).join(', ');
+      return opg.felter.map(function (f) { return f.navn + ' = ' + pentTal(f.svar); }).join(', ');
     }
     if (opg.type === 'broek') {
       return opg.interval ? (opg.facitVis || 'en brøk mellem ' + visTal(opg.interval[0]) + ' og ' + visTal(opg.interval[1]))
                           : opg.taeller + '/' + opg.naevner;
     }
     if (opg.interval) return opg.facitVis || (visTal(opg.interval[0]) + ' – ' + visTal(opg.interval[1]));
-    return String(opg.svar);
+    return pentTal(opg.svar);
   }
 
   global.Opgavetyper = {

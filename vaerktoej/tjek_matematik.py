@@ -24,6 +24,21 @@ def udregn(udtryk):
     # Fraction() keeps it exact: no float rounding in the checker itself.
     return eval(u, {"__builtins__": {}}, {})  # noqa: S307 - input is digit/operator only
 
+
+def vaerdi(s):
+    """A comparable value from an option string, whatever form it is written in."""
+    x = str(s).strip().replace("\u2212", "-")
+    m = re.fullmatch(r"\[\[(-?\d+)/(\d+)\]\]", x)
+    if m:
+        return Fraction(int(m.group(1)), int(m.group(2)))
+    m = re.fullmatch(r"(-?[\d,.]+)\s*%", x)
+    if m:
+        return tal(m.group(1)) / 100
+    m = re.fullmatch(r"(-?[\d,.]+)\s*(?:kr\.?|°C|m|km|g|kg|cm)?", x)
+    if m:
+        return tal(m.group(1))
+    raise ValueError(x)
+
 def F(x):
     return Fraction(x).limit_denominator(10**9)
 
@@ -71,7 +86,7 @@ for p in json.loads((ROD / "opgaver" / "manifest.json").read_text())["proever"]:
             krav(v, Fraction(int(o["taeller"]), int(o["naevner"])), "brøkregnestykke"); gjort = True
 
         # number sequences: constant step, and the gap must match
-        m = re.search(r"\n\n([\d,]+(?:\s*;\s*(?:\{svar\}|[\d,]+))+)\s*$", t)
+        m = re.search(r"\n\n([−-]?[\d,]+(?:\s*;\s*(?:\{svar\}|[−-]?[\d,]+))+)\s*$", t)
         if m:
             led = [x.strip() for x in m.group(1).split(";")]
             kendte = [(j, tal(x)) for j, x in enumerate(led) if x != "{svar}"]
@@ -176,6 +191,89 @@ for p in json.loads((ROD / "opgaver" / "manifest.json").read_text())["proever"]:
                 fejl.append(f"{nr}: {vaerdier} mod målet {maal}, korrekt={o['korrekt']}")
             gjort = True
 
+
+        # "En vare stiger fra 200 kr. til 250 kr. Hvor mange procent …"
+        m = re.search(r"(?:stiger|falder)(?: i pris)? fra ([\d.,]+) kr\. til ([\d.,]+) kr", t)
+        if m:
+            fra_, til_ = tal(m.group(1)), tal(m.group(2))
+            krav(abs(til_ - fra_) / fra_ * 100, tal(o["svar"]), "procentvis ændring"); gjort = True
+
+        # "En pris på 800 kr. stiger med 15 %."
+        m = re.search(r"pris på ([\d.,]+) kr\. stiger med ([\d,]+) %", t)
+        if m:
+            p0, pct = tal(m.group(1)), tal(m.group(2))
+            krav(p0 * (1 + pct / 100), tal(o["svar"]), "ny pris efter stigning"); gjort = True
+
+        # "20 % af et tal er 60. Hvad er tallet?"
+        m = re.search(r"([\d,]+) % af et tal er ([\d.,]+)", t)
+        if m:
+            krav(tal(m.group(2)) * 100 / tal(m.group(1)), tal(o["svar"]), "find det hele"); gjort = True
+
+        # conversions between fraction, decimal and percent
+        m = re.search(r"Hvor mange procent er \[\[(\d+)/(\d+)\]\]", t)
+        if m:
+            krav(Fraction(int(m.group(1)), int(m.group(2))) * 100, tal(o["svar"]), "brøk til procent"); gjort = True
+        m = re.search(r"Skriv ([\d,]+) % som en brøk", t)
+        if m and o["type"] == "broek":
+            krav(tal(m.group(1)) / 100, Fraction(int(o["taeller"]), int(o["naevner"])), "procent til brøk"); gjort = True
+        m = re.search(r"Skriv ([\d,]+) som procent", t)
+        if m:
+            krav(tal(m.group(1)) * 100, tal(o["svar"]), "decimaltal til procent"); gjort = True
+        m = re.search(r"Skriv ([\d,]+) % som decimaltal", t)
+        if m:
+            krav(tal(m.group(1)) / 100, tal(o["svar"]), "procent til decimaltal"); gjort = True
+
+        # "18 af dem cykler" out of "30 elever"
+        m = re.search(r"([\d]+) elever[\s\S]{0,40}?([\d]+) af dem", t)
+        if m and "%" in t:
+            krav(Fraction(int(m.group(2)), int(m.group(1))) * 100, tal(o["svar"]), "procentdel af et antal"); gjort = True
+
+        # unit-rate scaling: "til 4 personer bruger 600 g" -> "til 6 personer"
+        m = re.search(r"til (\d+) personer bruger ([\d.]+) g[\s\S]*?til (\d+) personer", t)
+        if m:
+            a, maengde, b = int(m.group(1)), tal(m.group(2)), int(m.group(3))
+            krav(maengde / a * b, tal(o["svar"]), "opskaleret opskrift"); gjort = True
+
+        # "5 kg koster 40 kr. Hvad koster 8 kg?"
+        m = re.search(r"(\d+) kg [^.]*koster ([\d.]+) kr[\s\S]*?koster (\d+) kg", t)
+        if m:
+            a, pris, b = int(m.group(1)), tal(m.group(2)), int(m.group(3))
+            krav(pris / a * b, tal(o["svar"]), "enhedspris"); gjort = True
+
+        # "150 kr. deles … i forholdet 2 : 3"
+        m = re.search(r"([\d.]+) kr\. deles[^.]*forholdet (\d+)\s*:\s*(\d+)", t)
+        if m:
+            i_alt, a, b = tal(m.group(1)), int(m.group(2)), int(m.group(3))
+            del_ = i_alt / (a + b)
+            krav(del_ * min(a, b) if "mindst" in t else del_ * max(a, b), tal(o["svar"]), "deling i forhold"); gjort = True
+
+        # "120 km på 2 timer … på 5 timer"
+        m = re.search(r"(\d+) km på (\d+) timer[\s\S]*?på (\d+) timer", t)
+        if m:
+            km, t1, t2 = int(m.group(1)), int(m.group(2)), int(m.group(3))
+            krav(Fraction(km, t1) * t2, tal(o["svar"]), "fart og strækning"); gjort = True
+
+        # cheapest per kilo
+        if o["type"] == "valg" and "billigst pr. kilo" in t:
+            pris = []
+            for v in o["valg"]:
+                mm = re.fullmatch(r"(\d+) kg for ([\d.]+) kr\.", v)
+                pris.append(tal(mm.group(2)) / int(mm.group(1)))
+            tjekket += 1
+            if pris.index(min(pris)) != o["korrekt"] or pris.count(min(pris)) > 1:
+                fejl.append(f"{nr}: kilopriser {pris}, korrekt={o['korrekt']}")
+            gjort = True
+
+        # a discount or VAT question answered by choosing a price
+        m = re.search(r"koster ([\d.]+) kr\.[\s\S]*?(?:Der er|Momsen er) ([\d,]+) %", t)
+        if m and o["type"] == "valg":
+            p0, pct = tal(m.group(1)), tal(m.group(2))
+            maal = p0 * (1 - pct / 100) if "rabat" in t else p0 * (1 + pct / 100)
+            tjekket += 1
+            if vaerdi(o["valg"][o["korrekt"]]) != maal:
+                fejl.append(f"{nr}: forventede {maal}, facit peger på {o['valg'][o['korrekt']]}")
+            gjort = True
+
         # "Hvilket tal ligger midt imellem 2,5 og 2,6?"
         m = re.search(r"ligger midt imellem ([\d,\u2212-]+) og ([\d,\u2212-]+)\?", t)
         if m:
@@ -197,6 +295,13 @@ for p in json.loads((ROD / "opgaver" / "manifest.json").read_text())["proever"]:
                     a = tal(a or "1")
                     v = (tal(hoejre) - tal(b)) / a if tegn == "+" else (tal(hoejre) + tal(b)) / a
                     krav(v, tal(o["svar"]), "ligning"); gjort = True
+
+        # "3x = -21"
+        if "Løs ligningen" in t and not gjort:
+            lign = t.replace("\u2212", "-").split("\n")[-1].split("x =")[0].strip()
+            m = re.fullmatch(r"([\d,]*)x\s*=\s*(-?[\d,]+)", lign)
+            if m:
+                krav(tal(m.group(2)) / tal(m.group(1) or "1"), tal(o["svar"]), "ligning"); gjort = True
 
         # place-value decomposition: 3,76 = 3 + 0,7 + {svar}
         m = re.fullmatch(r"\s*([\d,]+)\s*=\s*([\d,]+(?:\s*\+\s*[\d,]+)*)\s*\+\s*\{svar\}\s*", t)
@@ -288,7 +393,7 @@ for p in json.loads((ROD / "opgaver" / "manifest.json").read_text())["proever"]:
         # "Hvilket af disse tal er størst/mindst?"
         m = re.search(r"Hvilket (?:af disse )?tal er (størst|mindst)\?", t)
         if m and o["type"] == "valg":
-            v = [tal(x) for x in o["valg"]]
+            v = [vaerdi(x) for x in o["valg"]]
             rigtig = v.index(max(v)) if m.group(1) == "størst" else v.index(min(v))
             tjekket += 1
             if rigtig != o["korrekt"]:

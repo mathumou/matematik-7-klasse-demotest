@@ -1,0 +1,112 @@
+{
+  "titel": "Prøve 12 – procent og forholdsregning",
+  "varighed": 45,
+  "opgaver": [
+    { "id": "n1", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "**Hvor meget er 30 % af 250?** {svar}",
+      "svar": "75",
+      "forklaring": "10 % af 250 er 25, så 30 % er 3 · 25 = 75." },
+
+    { "id": "n2", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "Der er 30 elever på en årgang. 18 af dem cykler i skole.\n\n**Hvor stor en procentdel af eleverne cykler i skole?** {svar} %",
+      "svar": "60",
+      "forklaring": "18 ud af 30 er [[18/30]] = [[3/5]].\n\nEn femtedel er 20 %, så tre femtedele er 60 %. Du kan også regne 18 : 30 = 0,6, og 0,6 er 60 %." },
+
+    { "id": "n3", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "En vare stiger fra 200 kr. til 250 kr.\n\n**Hvor mange procent er stigningen?** {svar} %",
+      "svar": "25",
+      "forklaring": "Stigningen er 250 − 200 = 50 kr.\n\nProcenten regnes altid ud fra den **gamle** pris: 50 ud af 200 er [[50/200]] = [[1/4]] = 25 %.\n\nDen klassiske fælde er at dividere med 250 i stedet for 200." },
+
+    { "id": "n4", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "En cykel falder i pris fra 3000 kr. til 2400 kr.\n\n**Hvor mange procent er nedsættelsen?** {svar} %",
+      "svar": "20",
+      "forklaring": "Nedsættelsen er 3000 − 2400 = 600 kr.\n\n600 ud af den gamle pris 3000 er [[600/3000]] = [[1/5]] = 20 %." },
+
+    { "id": "n5", "type": "valg", "omraade": "regnestrategier", "grid2": true,
+      "tekst": "En trøje koster 400 kr. Der er 25 % rabat.\n\n**Hvad koster trøjen efter rabatten?**",
+      "valg": ["300 kr.", "375 kr.", "100 kr.", "500 kr."], "korrekt": 0,
+      "forklaring": "25 % af 400 kr. er 100 kr. i rabat. Prisen bliver 400 − 100 = 300 kr.\n\nDu kan også regne direkte: når du får 25 % rabat, betaler du 75 % af prisen, og 75 % af 400 er 300.\n\nSvaret 100 kr. er kun selve rabatten, ikke den nye pris." },
+
+    { "id": "n6", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "En pris på 800 kr. stiger med 15 %.\n\n**Hvad er den nye pris?** {svar} kr.",
+      "svar": "920",
+      "forklaring": "10 % af 800 er 80, og 5 % er 40. Stigningen er altså 80 + 40 = 120 kr.\n\nNy pris: 800 + 120 = 920 kr." },
+
+    { "id": "n7", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "**Hvor stor en procentdel af figuren er blå?** {svar} %",
+      "figur": { "slags": "gitter", "raekker": 5, "kolonner": 4, "farvede": [0,1,2,3,4,5,6,7,8,9,10,11,12], "alt": "en figur der består af 5 rækker med 4 felter i hver række. 13 af felterne er farvet blå" },
+      "svar": "65",
+      "forklaring": "Figuren har 5 · 4 = 20 felter, og 13 er blå.\n\nHvert felt er 100 : 20 = 5 %, så 13 felter er 13 · 5 = 65 %." },
+
+    { "id": "n8", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvor mange procent er [[3/4]]?** {svar} %",
+      "svar": "75",
+      "forklaring": "[[3/4]] betyder 3 ud af 4 lige store dele. Hver fjerdedel er 25 %, så tre fjerdedele er 3 · 25 = 75 %.\n\nDu kan også forlænge brøken til hundrededele: [[3/4]] = [[75/100]] = 75 %." },
+
+    { "id": "n9", "type": "broek", "omraade": "tal",
+      "tekst": "**Skriv 75 % som en brøk.** {svar}",
+      "taeller": "3", "naevner": "4",
+      "forklaring": "Procent betyder hundrededele, så 75 % er [[75/100]].\n\n[[75/100]] kan forkortes: divider både tæller og nævner med 25, og du får [[3/4]]. Begge skrivemåder tæller som rigtige." },
+
+    { "id": "n10", "type": "tal", "omraade": "tal",
+      "tekst": "**Skriv 0,45 som procent.** {svar} %",
+      "svar": "45",
+      "forklaring": "Et decimaltal bliver til procent ved at gange med 100: 0,45 · 100 = 45 %.\n\nKommaet flytter altså to pladser til højre." },
+
+    { "id": "n11", "type": "tal", "omraade": "tal",
+      "tekst": "**Skriv 8 % som decimaltal.** {svar}",
+      "svar": "0,08",
+      "forklaring": "8 % betyder 8 hundrededele, altså [[8/100]] = 0,08.\n\nPas på: svaret er ikke 0,8 — det ville være 80 %." },
+
+    { "id": "n12", "type": "valg", "omraade": "tal", "grid2": true,
+      "tekst": "**Hvilket af disse tal er størst?**",
+      "valg": ["0,4", "45 %", "[[2/5]]", "[[1/2]]"], "korrekt": 3,
+      "forklaring": "Lav dem alle om til procent: 0,4 = 40 %, 45 % = 45 %, [[2/5]] = 40 %, [[1/2]] = 50 %.\n\n[[1/2]] er størst. Læg mærke til, at 0,4 og [[2/5]] er præcis lige store." },
+
+    { "id": "n13", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "20 % af et tal er 60.\n\n**Hvad er tallet?** {svar}",
+      "svar": "300",
+      "forklaring": "Her skal du regne baglæns. Hvis 20 % er 60, så er 10 % halvdelen, altså 30.\n\n100 % er 10 gange så meget: 10 · 30 = 300." },
+
+    { "id": "n14", "type": "valg", "omraade": "regnestrategier", "grid2": true,
+      "tekst": "En vare koster 400 kr. uden moms. Momsen er 25 %.\n\n**Hvad koster varen med moms?**",
+      "valg": ["500 kr.", "425 kr.", "410 kr.", "320 kr."], "korrekt": 0,
+      "forklaring": "25 % af 400 kr. er 100 kr. i moms.\n\nPrisen med moms: 400 + 100 = 500 kr." },
+
+    { "id": "n15", "type": "tal", "omraade": "algebra",
+      "tekst": "En opskrift til 4 personer bruger 600 g mel.\n\n**Hvor meget mel skal der bruges til 6 personer?** {svar} g",
+      "svar": "900",
+      "forklaring": "Find først hvor meget én person bruger: 600 : 4 = 150 g.\n\nSå er 6 personer: 6 · 150 = 900 g.\n\nDet kaldes at gå vejen om enheden." },
+
+    { "id": "n16", "type": "tal", "omraade": "algebra",
+      "tekst": "5 kg kartofler koster 40 kr.\n\n**Hvad koster 8 kg kartofler?** {svar} kr.",
+      "svar": "64",
+      "forklaring": "Ét kilo koster 40 : 5 = 8 kr.\n\nSå koster 8 kg: 8 · 8 = 64 kr." },
+
+    { "id": "n17", "type": "tal", "omraade": "algebra",
+      "tekst": "150 kr. deles mellem to søskende i forholdet 2 : 3.\n\n**Hvor mange kroner får den, der får mindst?** {svar} kr.",
+      "svar": "60",
+      "forklaring": "Forholdet 2 : 3 betyder 2 + 3 = 5 lige store dele i alt.\n\nHver del er 150 : 5 = 30 kr.\n\nDen mindste andel er 2 dele: 2 · 30 = 60 kr. (Den anden får 3 · 30 = 90 kr., og 60 + 90 = 150. ✓)" },
+
+    { "id": "n18", "type": "valg", "omraade": "algebra",
+      "tekst": "**Hvilken pakke kartofler er billigst pr. kilo?**",
+      "valg": ["2 kg for 30 kr.", "3 kg for 42 kr.", "5 kg for 75 kr.", "4 kg for 60 kr."], "korrekt": 1,
+      "forklaring": "Regn prisen pr. kilo for hver pakke:\n2 kg for 30 kr. → 15 kr. pr. kg\n3 kg for 42 kr. → 14 kr. pr. kg\n5 kg for 75 kr. → 15 kr. pr. kg\n4 kg for 60 kr. → 15 kr. pr. kg\n\nDen billigste er 3 kg for 42 kr. Den største pakke er altså ikke altid den billigste pr. kilo." },
+
+    { "id": "n19", "type": "flerefelter", "omraade": "algebra",
+      "tekst": "En opskrift skaleres op. Mængden mel er proportional med antallet af personer.\n\n**Hvilke tal skal der stå i de to tomme felter?**",
+      "tabel": { "hoved": ["Personer", "Mel i gram"], "raekker": [["4", "600"], ["6", "{svar1}"], ["8", "1200"], ["10", "{svar2}"]] },
+      "felter": [{ "navn": "mel til 6 personer", "svar": "900" }, { "navn": "mel til 10 personer", "svar": "1500" }],
+      "forklaring": "Hver person bruger 600 : 4 = 150 g mel.\n\n6 personer: 6 · 150 = 900 g.\n10 personer: 10 · 150 = 1500 g.\n\nTjek at det passer med 8 personer: 8 · 150 = 1200 g. ✓" },
+
+    { "id": "n20", "type": "valg", "omraade": "algebra", "grid2": true,
+      "tekst": "Et kort har målestoksforholdet 1 : 1000.\nEn vej er 5 cm på kortet.\n\n**Hvor lang er vejen i virkeligheden?**",
+      "valg": ["50 m", "5 m", "500 m", "5 km"], "korrekt": 0,
+      "forklaring": "1 : 1000 betyder, at 1 cm på kortet svarer til 1000 cm i virkeligheden.\n\n5 cm på kortet er 5 · 1000 = 5000 cm.\n\n5000 cm er 50 m, fordi der går 100 cm på en meter." },
+
+    { "id": "n21", "type": "tal", "omraade": "algebra",
+      "tekst": "En bil kører 120 km på 2 timer.\nBilen kører med samme fart hele vejen.\n\n**Hvor langt kører bilen på 5 timer?** {svar} km",
+      "svar": "300",
+      "forklaring": "Farten er 120 : 2 = 60 km i timen.\n\nPå 5 timer: 5 · 60 = 300 km." }
+  ]
+}

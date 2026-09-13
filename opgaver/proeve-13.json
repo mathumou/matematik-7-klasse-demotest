@@ -1,0 +1,111 @@
+{
+  "titel": "Prøve 13 – negative tal",
+  "varighed": 45,
+  "opgaver": [
+    { "id": "o1", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "−7 + 12 = {svar}",
+      "svar": "5",
+      "forklaring": "Start i −7 og gå 12 frem på tallinjen. De første 7 bruges på at nå op til 0, og så er der 5 tilbage.\n\n−7 + 12 = 5." },
+
+    { "id": "o2", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "4 − 11 = {svar}",
+      "svar": "-7",
+      "forklaring": "Du trækker mere fra, end du har. Fra 4 går du 4 ned til 0, og så er der 7 tilbage at trække fra.\n\n0 − 7 = −7. Husk minus foran." },
+
+    { "id": "o3", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "−3 − 8 = {svar}",
+      "svar": "-11",
+      "forklaring": "Du starter under nul og skal længere ned. Fra −3 og 8 mere ned: −3 − 8 = −11.\n\nTo bevægelser samme vej lægges sammen — det bliver et større minustal." },
+
+    { "id": "o4", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "−5 · 4 = {svar}",
+      "svar": "-20",
+      "forklaring": "−5 · 4 betyder fire gange −5: −5 − 5 − 5 − 5 = −20.\n\nMinus gange plus giver minus." },
+
+    { "id": "o5", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "−6 · (−3) = {svar}",
+      "svar": "18",
+      "forklaring": "Minus gange minus giver plus: −6 · (−3) = 18.\n\nTænk på det som at vende retningen to gange — så er du tilbage i den positive retning." },
+
+    { "id": "o6", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "−24 : 6 = {svar}",
+      "svar": "-4",
+      "forklaring": "24 : 6 = 4, og fortegnene er forskellige (minus og plus), så svaret bliver negativt: −4.\n\nTjek: −4 · 6 = −24. ✓" },
+
+    { "id": "o7", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "−36 : (−9) = {svar}",
+      "svar": "4",
+      "forklaring": "36 : 9 = 4, og begge tal er negative, så svaret bliver positivt: 4.\n\nSamme regel som ved gange: to minusser giver plus. Tjek: 4 · (−9) = −36. ✓" },
+
+    { "id": "o8", "type": "valg", "omraade": "regnestrategier", "grid2": true,
+      "tekst": "Om natten viste termometeret −9 °C.\nOm formiddagen var temperaturen steget med 4 °C.\n\n**Hvad viste termometeret om formiddagen?**",
+      "valg": ["5 °C", "−5 °C", "13 °C", "−13 °C"], "korrekt": 1,
+      "forklaring": "Fra −9 og 4 frem kommer du til −5. Der mangler stadig 5 grader op til 0.\n\nDet er stadig frostvejr, så svaret skal have minus foran." },
+
+    { "id": "o9", "type": "valg", "omraade": "tal", "grid2": true,
+      "tekst": "**Hvilket tal er størst?**",
+      "valg": ["−2", "−9", "−5", "−1"], "korrekt": 3,
+      "forklaring": "Jo længere til højre på tallinjen, jo større er tallet. −1 ligger tættest på nul og er derfor størst.\n\nBlandt negative tal er det dét med det **mindste** ciffer, der er størst: −1 er større end −9." },
+
+    { "id": "o10", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvilket tal peger pilen på?** {svar}",
+      "figur": { "slags": "tallinje", "fra": -3, "til": -2, "trin": 0.1, "labels": [-3, -2.5, -2], "pil": -2.4, "alt": "en tallinje fra −3 til −2, hvor inddelingen har værdien 0,1. Pilen peger på seks dele efter −3" },
+      "svar": "-2,4",
+      "forklaring": "Hvert mellemrum er 0,1. Pilen står 6 mellemrum efter −3, altså 0,6 til højre for −3.\n\n−3 + 0,6 = −2,4. Læg mærke til, at tallene bliver **større**, når du går mod højre — selv om cifferet bliver mindre." },
+
+    { "id": "o11", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvilket tal er 7 mindre end 3?** {svar}",
+      "svar": "-4",
+      "forklaring": "Start i 3 og gå 7 tilbage. Du passerer 0 efter 3 skridt, og der er 4 tilbage.\n\n3 − 7 = −4." },
+
+    { "id": "o12", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvilket tal ligger midt imellem −4 og 2?** {svar}",
+      "svar": "-1",
+      "forklaring": "Afstanden fra −4 til 2 er 6. Halvdelen er 3.\n\nGå 3 frem fra −4: −4 + 3 = −1.\n\nDu kan også lægge tallene sammen og dele med 2: (−4 + 2) : 2 = −2 : 2 = −1." },
+
+    { "id": "o13", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "Om morgenen var der −8 °C. Om eftermiddagen var der 5 °C.\n\n**Hvor mange grader er temperaturen steget?** {svar} °C",
+      "svar": "13",
+      "forklaring": "Fra −8 op til 0 er 8 grader, og fra 0 op til 5 er 5 grader mere.\n\n8 + 5 = 13 grader.\n\nForskellen mellem to tal på hver sin side af nul er summen af afstandene til nul." },
+
+    { "id": "o14", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "Emil har −250 kr. på sin konto. Han sætter 400 kr. ind.\n\n**Hvor mange kroner har han nu på kontoen?** {svar} kr.",
+      "svar": "150",
+      "forklaring": "De første 250 kr. går til at dække minusset, så kontoen står i 0.\n\nSå er der 400 − 250 = 150 kr. tilbage: −250 + 400 = 150." },
+
+    { "id": "o15", "type": "tal", "omraade": "algebra",
+      "tekst": "**Løs ligningen.**\n\nx + 9 = 4      x = {svar}",
+      "svar": "-5",
+      "forklaring": "Træk 9 fra på begge sider: x = 4 − 9 = −5.\n\nTjek: −5 + 9 = 4. ✓\n\nLøsningen på en ligning må gerne være negativ." },
+
+    { "id": "o16", "type": "tal", "omraade": "algebra",
+      "tekst": "**Løs ligningen.**\n\n3x = −21      x = {svar}",
+      "svar": "-7",
+      "forklaring": "Divider med 3 på begge sider: x = −21 : 3 = −7.\n\nTjek: 3 · (−7) = −21. ✓" },
+
+    { "id": "o17", "type": "valg", "omraade": "algebra", "grid2": true,
+      "tekst": "**Hvilket regnestykke giver et negativt resultat?**",
+      "valg": ["(−4) · (−5)", "(−4) + 9", "(−4) · 5", "12 − 4"], "korrekt": 2,
+      "forklaring": "Regn dem igennem:\n(−4) · (−5) = 20 — to minusser giver plus\n(−4) + 9 = 5\n(−4) · 5 = −20 ✓\n12 − 4 = 8\n\nKun (−4) · 5 giver et negativt resultat: minus gange plus giver minus." },
+
+    { "id": "o18", "type": "valg", "omraade": "tal", "grid2": true,
+      "tekst": "**Hvilket tal er mindst?**",
+      "valg": ["0,5", "−0,5", "−1,5", "1,5"], "korrekt": 2,
+      "forklaring": "Alle negative tal er mindre end alle positive tal, så svaret er enten −0,5 eller −1,5.\n\n−1,5 ligger længst til venstre på tallinjen og er derfor mindst." },
+
+    { "id": "o19", "type": "tal", "omraade": "algebra",
+      "tekst": "**Skriv det tal, der mangler i talfølgen.**\n\n−12 ; −9 ; −6 ; {svar} ; 0",
+      "svar": "-3",
+      "forklaring": "Der lægges 3 til hver gang: −12 → −9 → −6 → −3 → 0.\n\nTallene vokser, selv om de er negative — de nærmer sig nul." },
+
+    { "id": "o20", "type": "valg", "omraade": "regnestrategier", "grid2": true,
+      "tekst": "(−2) · (−2) · (−2) = ?",
+      "valg": ["−8", "8", "−6", "6"], "korrekt": 0,
+      "forklaring": "Tag to ad gangen: (−2) · (−2) = 4, fordi to minusser giver plus.\n\nSå 4 · (−2) = −8.\n\nEt ulige antal minusser giver et negativt svar; et lige antal giver et positivt." },
+
+    { "id": "o21", "type": "broek", "omraade": "regnestrategier",
+      "tekst": "[[3/4]] − [[1/2]] = {svar}",
+      "taeller": "1", "naevner": "4",
+      "forklaring": "Lav [[1/2]] om til fjerdedele: gang tæller og nævner med 2, så [[1/2]] = [[2/4]].\n\nSå er [[3/4]] − [[2/4]] = [[1/4]]." }
+  ]
+}
