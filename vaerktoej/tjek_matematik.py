@@ -85,19 +85,50 @@ for p in json.loads((ROD / "opgaver" / "manifest.json").read_text())["proever"]:
             v = Fraction(int(a), int(b)) + (1 if tegn == "+" else -1) * Fraction(int(c), int(d))
             krav(v, Fraction(int(o["taeller"]), int(o["naevner"])), "brøkregnestykke"); gjort = True
 
-        # number sequences: constant step, and the gap must match
-        m = re.search(r"\n\n([−-]?[\d,]+(?:\s*;\s*(?:\{svar\}|[−-]?[\d,]+))+)\s*$", t)
+        # Number sequences. A sequence is not always arithmetic: it may multiply,
+        # be square numbers, or follow a two-step rule like "double and add one".
+        # Try each rule against the known terms and use whichever actually fits.
+        m = re.search(r"\n\n([\u2212-]?[\d,]+(?:\s*;\s*(?:\{svar\}|[\u2212-]?[\d,]+))+)\s*$", t)
         if m:
             led = [x.strip() for x in m.group(1).split(";")]
             kendte = [(j, tal(x)) for j, x in enumerate(led) if x != "{svar}"]
-            skridt = {(kendte[k + 1][1] - kendte[k][1]) / (kendte[k + 1][0] - kendte[k][0])
-                      for k in range(len(kendte) - 1)}
-            if len(skridt) != 1:
-                fejl.append(f"{nr}: talfølgen har ikke samme spring hele vejen")
+            hul = [j for j, x in enumerate(led) if x == "{svar}"]
+            idx = [j for j, _ in kendte]
+            v = [x for _, x in kendte]
+
+            def forudsig(regel):
+                """Rebuild the whole sequence from term 0 using a rule, or None."""
+                if regel == "plus" and len(v) > 1:
+                    d = (v[1] - v[0]) / (idx[1] - idx[0])
+                    return [v[0] + d * (j - idx[0]) for j in range(len(led))]
+                if regel == "gange" and len(v) > 1 and v[0] != 0 and idx[1] - idx[0] == 1:
+                    k = v[1] / v[0]
+                    return [v[0] * k ** (j - idx[0]) for j in range(len(led))]
+                if regel == "kvadrat":
+                    return [Fraction((j + 1) ** 2) for j in range(len(led))]
+                if regel == "gangeplus" and len(v) > 2 and idx[:3] == [0, 1, 2]:
+                    # v1 = a*v0 + b and v2 = a*v1 + b
+                    if v[1] - v[0] == 0:
+                        return None
+                    a = (v[2] - v[1]) / (v[1] - v[0])
+                    b = v[1] - a * v[0]
+                    ud = [v[0]]
+                    for _ in range(len(led) - 1):
+                        ud.append(a * ud[-1] + b)
+                    return ud
+                return None
+
+            fundet = None
+            for regel in ("plus", "gange", "kvadrat", "gangeplus"):
+                p = forudsig(regel)
+                if p and all(p[j] == x for j, x in kendte):
+                    fundet = (regel, p)
+                    break
+            if fundet is None:
+                sprunget.append(nr + " (talfølgens regel kunne ikke bestemmes)")
             else:
-                s = skridt.pop()
-                hul = [j for j, x in enumerate(led) if x == "{svar}"][0]
-                krav(kendte[0][1] + s * (hul - kendte[0][0]), tal(o["svar"]), "talfølge")
+                regel, p = fundet
+                krav(p[hul[0]], tal(o["svar"]), f"talfølge ({regel})")
             gjort = True
 
         # --- figures ---------------------------------------------------------
@@ -172,6 +203,73 @@ for p in json.loads((ROD / "opgaver" / "manifest.json").read_text())["proever"]:
             gjort = True
 
 
+
+
+        # the equals sign as a balance: "240 - 18 = {svar} + 87"
+        m = re.fullmatch(r"\s*([\d\s+\-*/().,·:\u2212]+?)\s*=\s*\{svar\}\s*([+\u2212\-*·])\s*([\d,]+)\s*", t)
+        if m:
+            venstre, tegn, b = udregn(m.group(1)), m.group(2), tal(m.group(3))
+            v = venstre - b if tegn == "+" else (venstre + b if tegn in "\u2212-" else venstre / b)
+            krav(v, tal(o["svar"]), "lighedstegn som balance"); gjort = True
+
+        # "129 + 22 = 200 - {svar}"
+        m = re.fullmatch(r"\s*([\d\s+\-*/().,·:\u2212]+?)\s*=\s*([\d,]+)\s*([+\u2212\-])\s*\{svar\}\s*", t)
+        if m:
+            venstre, a, tegn = udregn(m.group(1)), tal(m.group(2)), m.group(3)
+            krav(a - venstre if tegn in "\u2212-" else venstre - a, tal(o["svar"]), "lighedstegn som balance"); gjort = True
+
+        # a sequence with two blanks
+        if o["type"] == "flerefelter" and not o.get("tabel"):
+            m = re.search(r"\n\n([^\n]*;[^\n]*)$", t)
+            if m:
+                led = [x.strip() for x in m.group(1).split(";")]
+                vist = []
+                for x in led:
+                    mm = re.fullmatch(r"\{svar(\d)\}", x)
+                    vist.append(tal(o["felter"][int(mm.group(1)) - 1]["svar"]) if mm else tal(x))
+                spring = {vist[i + 1] - vist[i] for i in range(len(vist) - 1)}
+                tjekket += 1
+                if len(spring) != 1:
+                    fejl.append(f"{nr}: talfølgen har ikke samme spring: {vist}")
+                gjort = True
+
+        # the matchstick table: a linear rule tested at a far-off term
+        if o["type"] == "flerefelter" and o.get("tabel") and "tændstik" in t:
+            par = []
+            for x, y in o["tabel"]["raekker"]:
+                if "…" in (x, y):
+                    continue
+                mm = re.fullmatch(r"\{svar(\d)\}", y)
+                par.append((tal(x), tal(o["felter"][int(mm.group(1)) - 1]["svar"]) if mm else tal(y)))
+            a = (par[1][1] - par[0][1]) / (par[1][0] - par[0][0])
+            b = par[0][1] - a * par[0][0]
+            for x, y in par:
+                krav(a * x + b, y, f"figur {x} i mønsteret")
+            gjort = True
+
+        # "Hvilken formel passer til at beregne det n'te tal"
+        if o["type"] == "valg" and "n'te tal" in t:
+            folge = [tal(x) for x in re.search(r"talfølge: ([\d\s;,]+)", t).group(1).split(";")]
+            passer = []
+            for j, v in enumerate(o["valg"]):
+                mm = re.fullmatch(r"(\d+)\s*·\s*n\s*([+\u2212-])\s*(\d+)", v.replace("\u2212", "-"))
+                a, tegn, b = int(mm.group(1)), mm.group(2), int(mm.group(3))
+                regn = [a * n + (b if tegn == "+" else -b) for n in range(1, len(folge) + 1)]
+                if regn == folge:
+                    passer.append(j)
+            tjekket += 1
+            if passer != [o["korrekt"]]:
+                fejl.append(f"{nr}: formler der passer: {passer}, korrekt={o['korrekt']}")
+            gjort = True
+
+        # ratio where one part is given: "3 : 4 ... Der er 15 hunde"
+        m = re.search(r"forholdet mellem (\w+) og (\w+)[^.]*?(\d+)\s*:\s*(\d+)[\s\S]*?Der er (\d+) \*?\*?(\w+)", t, re.I)
+        if m:
+            navn1, navn2, d1, d2, antal, givet = m.groups()
+            d1, d2, antal = int(d1), int(d2), int(antal)
+            # which side of the ratio does the stated amount belong to?
+            kendt, soegt = (d1, d2) if givet.rstrip("e").startswith(navn1.rstrip("e")[:4]) else (d2, d1)
+            krav(Fraction(antal, kendt) * soegt, tal(o["svar"]), "forholdsregning"); gjort = True
 
         # a missing addend sitting mid-expression: "45 + {svar} = 45", "20 + {svar} = 27,5"
         sidste = [l for l in t.split("\n") if "{svar}" in l]

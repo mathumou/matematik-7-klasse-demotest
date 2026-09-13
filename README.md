@@ -25,6 +25,10 @@ når siden først er hentet.
     indholdsgrundlag nævner for 7. klassetrin, men som ingen demoopgave viser.
   - **Prøve 13** dækker **negative tal**, inklusive multiplikation og division,
     der formelt hører til 8. klassetrin og er med som strækstof.
+  - **Prøve 14** dækker **lighedstegnets betydning** (`240 − 18 = ___ + 87`) og
+    **talmønstre, der ikke vokser jævnt** — gangemønstre, kvadrattal, to-trins-regler
+    og figurfølger, hvor man skal finde forskriften frem for at tælle sig frem.
+    Begge dele står i det officielle indholdsgrundlag for 7. klassetrin.
 - Facit og forklaringer vises **først efter aflevering**, som til den rigtige prøve.
 - Resultater gemmes kun i browserens eget lager. Intet sendes nogen steder hen.
 

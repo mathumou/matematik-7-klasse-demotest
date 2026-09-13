@@ -1,0 +1,112 @@
+{
+  "titel": "Prøve 14 – lighedstegn og talmønstre",
+  "varighed": 45,
+  "opgaver": [
+    { "id": "p1", "type": "tal", "omraade": "algebra",
+      "tekst": "240 − 18 = {svar} + 87",
+      "svar": "135",
+      "forklaring": "Lighedstegnet betyder, at de to sider skal være lige store — ikke \"her kommer svaret\".\n\nVenstre side: 240 − 18 = 222.\nHøjre side skal også give 222: 222 − 87 = 135.\n\nTjek: 135 + 87 = 222. ✓" },
+
+    { "id": "p2", "type": "tal", "omraade": "algebra",
+      "tekst": "129 + 22 = 200 − {svar}",
+      "svar": "49",
+      "forklaring": "Venstre side: 129 + 22 = 151.\n\nHøjre side skal give 151: 200 − 151 = 49.\n\nTjek: 200 − 49 = 151. ✓" },
+
+    { "id": "p3", "type": "tal", "omraade": "algebra",
+      "tekst": "248 − 53 = {svar} − 29",
+      "svar": "224",
+      "forklaring": "Venstre side: 248 − 53 = 195.\n\nHer skal du lægge til i stedet for at trække fra, fordi tallet står før minusset: 195 + 29 = 224.\n\nTjek: 224 − 29 = 195. ✓" },
+
+    { "id": "p4", "type": "tal", "omraade": "algebra",
+      "tekst": "6 · 8 = {svar} · 4",
+      "svar": "12",
+      "forklaring": "Venstre side: 6 · 8 = 48.\n\nHøjre side skal også give 48: 48 : 4 = 12.\n\nDu kan også se det uden at regne: 4 er halvdelen af 8, så det andet tal må være det dobbelte af 6." },
+
+    { "id": "p5", "type": "valg", "omraade": "algebra", "grid2": true,
+      "tekst": "**Hvilket tal kommer efter i talfølgen?**\n\n2 ; 6 ; 18 ; 54 ; …",
+      "valg": ["162", "108", "72", "216"], "korrekt": 0,
+      "forklaring": "Her lægges der ikke til — der **ganges**. 2 · 3 = 6, 6 · 3 = 18, 18 · 3 = 54.\n\nSå er næste tal 54 · 3 = 162.\n\nTjek altid om springet er det samme hver gang (plus) eller om tallet ganges hver gang." },
+
+    { "id": "p6", "type": "tal", "omraade": "algebra",
+      "tekst": "**Skriv det næste tal i talfølgen.**\n\n1 ; 4 ; 9 ; 16 ; {svar}",
+      "svar": "25",
+      "forklaring": "Tallene er kvadrattal: 1 · 1, 2 · 2, 3 · 3, 4 · 4.\n\nNæste er 5 · 5 = 25.\n\nSpringene vokser: +3, +5, +7, +9 — så det er ikke en talfølge med fast spring." },
+
+    { "id": "p7", "type": "tal", "omraade": "algebra",
+      "tekst": "**Skriv det næste tal i talfølgen.**\n\n2 ; 5 ; 11 ; 23 ; {svar}",
+      "svar": "47",
+      "forklaring": "Reglen er: gang med 2 og læg 1 til.\n2 · 2 + 1 = 5, 5 · 2 + 1 = 11, 11 · 2 + 1 = 23.\n\nSå er næste 23 · 2 + 1 = 47.\n\nEn talfølge kan have en regel med to trin." },
+
+    { "id": "p8", "type": "flerefelter", "omraade": "algebra",
+      "tekst": "**Skriv de tal, der mangler i talfølgen.**\n\n4 ; 9 ; {svar1} ; 19 ; {svar2}",
+      "felter": [{ "navn": "det tredje tal", "svar": "14" }, { "navn": "det femte tal", "svar": "24" }],
+      "forklaring": "Der lægges 5 til hver gang: 4 → 9 → 14 → 19 → 24.\n\nDu kan finde springet ud fra to tal, du kender: 9 − 4 = 5." },
+
+    { "id": "p9", "type": "flerefelter", "omraade": "algebra",
+      "tekst": "Figurerne er bygget af tændstikker.\nFigur 1 består af 3 tændstikker, figur 2 af 5 tændstikker, og figur 3 af 7 tændstikker.\n\n**Hvor mange tændstikker er der i figur 4 og i figur 10?**",
+      "tabel": { "hoved": ["Figur nr.", "Tændstikker"], "raekker": [["1", "3"], ["2", "5"], ["3", "7"], ["4", "{svar1}"], ["…", "…"], ["10", "{svar2}"]] },
+      "felter": [{ "navn": "figur 4", "svar": "9" }, { "navn": "figur 10", "svar": "21" }],
+      "forklaring": "Der kommer 2 tændstikker til for hver ny figur: 3, 5, 7, 9 …\n\nFigur 4 har altså 9 tændstikker.\n\nFor figur 10 nytter det ikke at tælle sig frem én ad gangen. Find reglen i stedet: antallet er 2 gange figurnummeret plus 1. Figur 10: 2 · 10 + 1 = 21." },
+
+    { "id": "p10", "type": "valg", "omraade": "algebra",
+      "tekst": "I tabellen ses en talfølge: 2 ; 5 ; 8 ; 11 ; 14\n\n**Hvilken formel passer til at beregne det n'te tal i talfølgen?**",
+      "valg": ["3 · n + 2", "3 · n + 3", "3 · n − 1", "3 · n − 2"], "korrekt": 2,
+      "forklaring": "Afprøv formlerne på det første tal, hvor n = 1:\n3 · 1 + 2 = 5 ✗\n3 · 1 + 3 = 6 ✗\n3 · 1 − 1 = 2 ✓\n3 · 1 − 2 = 1 ✗\n\nTjek så med et tal mere, for at være sikker. n = 5: 3 · 5 − 1 = 14. ✓\n\nDet er ikke nok at afprøve ét led — test altid mindst to." },
+
+    { "id": "p11", "type": "valg", "omraade": "algebra",
+      "tekst": "Magnus har 43 centicubes i alt.\nHan gemmer nogle under et krus og lægger 14 uden for kruset.\n\n**Hvilken ligning passer til opgaven, når x er antallet under kruset?**",
+      "valg": ["14 + x = 43", "43 + x = 14", "14 · x = 43", "x − 14 = 43"], "korrekt": 0,
+      "forklaring": "De 14 uden for kruset plus dem under kruset giver tilsammen alle 43.\n\nDet skrives 14 + x = 43.\n\nAt oversætte en fortælling til matematiksprog er ofte det sværeste — læs sætningen igen og spørg: hvad lægges sammen til hvad?" },
+
+    { "id": "p12", "type": "tal", "omraade": "algebra",
+      "tekst": "Magnus har 43 centicubes i alt, og 14 af dem ligger uden for kruset.\n\n**Hvor mange centicubes er der under kruset?** {svar}",
+      "svar": "29",
+      "forklaring": "Ligningen er 14 + x = 43.\n\nTræk 14 fra på begge sider: x = 43 − 14 = 29." },
+
+    { "id": "p13", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvilket tal ligger midt imellem 1,2 og 1,3?** {svar}",
+      "svar": "1,25",
+      "forklaring": "Der er 0,1 mellem de to tal, og halvdelen af 0,1 er 0,05.\n\n1,2 + 0,05 = 1,25." },
+
+    { "id": "p14", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvilket tal peger pilen på?** {svar}",
+      "figur": { "slags": "tallinje", "fra": 4.2, "til": 4.3, "trin": 0.01, "labels": [4.2, 4.25, 4.3], "pil": 4.27, "alt": "en tallinje fra 4,2 til 4,3, hvor inddelingen har værdien 0,01. Pilen peger på syv dele efter 4,2" },
+      "svar": "4,27",
+      "forklaring": "Hvert mellemrum er 0,01. Pilen står 7 mellemrum efter 4,2: 4,2 + 0,07 = 4,27." },
+
+    { "id": "p15", "type": "tal", "omraade": "tal",
+      "tekst": "**Hvilket tal er 0,6 større end 2,7?** {svar}",
+      "svar": "3,3",
+      "forklaring": "2,7 + 0,6: der er 0,3 op til 3, og så er der 0,3 tilbage. 3 + 0,3 = 3,3." },
+
+    { "id": "p16", "type": "valg", "omraade": "tal", "grid2": true,
+      "tekst": "**Hvilket tal er størst?**",
+      "valg": ["0,62", "0,7", "0,609", "0,68"], "korrekt": 1,
+      "forklaring": "Skriv dem med lige mange decimaler: 0,620 · 0,700 · 0,609 · 0,680.\n\n0,7 er størst, fordi den har 7 tiendedele, hvor de andre kun har 6." },
+
+    { "id": "p17", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "Forholdet mellem hunde og katte i en dyrepension er 3 : 4.\nDer er 15 hunde.\n\n**Hvor mange katte er der?** {svar}",
+      "svar": "20",
+      "forklaring": "Forholdet 3 : 4 betyder, at der er 3 dele hunde og 4 dele katte.\n\n15 hunde svarer til 3 dele, så én del er 15 : 3 = 5.\n\nKattene er 4 dele: 4 · 5 = 20." },
+
+    { "id": "p18", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "I en æske er forholdet mellem små og store kugler 2 : 3.\nDer er 18 **store** kugler.\n\n**Hvor mange små kugler er der?** {svar}",
+      "svar": "12",
+      "forklaring": "Pas på hvilket tal i forholdet du får oplyst. De 18 store hører til 3-tallet, ikke 2-tallet.\n\nÉn del er 18 : 3 = 6.\n\nDe små er 2 dele: 2 · 6 = 12. Der er altså **færre** små end store." },
+
+    { "id": "p19", "type": "valg", "omraade": "regnestrategier", "grid2": true,
+      "tekst": "Hos bageren koster en snegl 12,50 kr. pr. stk.\nKøber man 3 snegle, koster de tilsammen 30,00 kr.\n\n**Hvor meget sparer man pr. snegl ved at købe 3?**",
+      "valg": ["2,50 kr.", "10,00 kr.", "7,50 kr.", "12,50 kr."], "korrekt": 0,
+      "forklaring": "Prisen pr. snegl i tilbuddet: 30,00 : 3 = 10,00 kr.\n\nBesparelsen pr. snegl: 12,50 − 10,00 = 2,50 kr.\n\nSvaret 7,50 kr. er hvad man sparer på alle tre snegle tilsammen — men der blev spurgt pr. snegl." },
+
+    { "id": "p20", "type": "tal", "omraade": "regnestrategier",
+      "tekst": "Ole køber 2 snegle til 12,50 kr. pr. stk. og 3 romkugler til 6,50 kr. pr. stk.\nHan betaler med en 200-kroneseddel.\n\n**Hvor mange kroner får han tilbage?** {svar} kr.",
+      "svar": "155,50",
+      "forklaring": "Snegle: 2 · 12,50 = 25,00 kr.\nRomkugler: 3 · 6,50 = 19,50 kr.\nI alt: 25,00 + 19,50 = 44,50 kr.\n\nTilbage: 200 − 44,50 = 155,50 kr.\n\nOpgaven har tre trin — skriv dem ned undervejs, så du ikke taber et af dem." },
+
+    { "id": "p21", "type": "broek", "omraade": "regnestrategier",
+      "tekst": "[[5/6]] − [[1/2]] = {svar}",
+      "taeller": "1", "naevner": "3",
+      "forklaring": "Lav [[1/2]] om til sjettedele: [[1/2]] = [[3/6]].\n\nSå er [[5/6]] − [[3/6]] = [[2/6]], som kan forkortes til [[1/3]]. Begge skrivemåder tæller som rigtige." }
+  ]
+}
